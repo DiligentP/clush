@@ -1,4 +1,4 @@
-# clush-recruit project
+# clush-project
 
 ## 프로젝트 개요
 MERN 스택 기반의 웹 애플리케이션으로, 사용자 관리 및 실시간 데이터 동기화 기능을 제공합니다.
