@@ -4,7 +4,7 @@
 
 
 ## 기술 스택
-- **프론트엔드**: React 18, TypeScript, Vite
+- **프론트엔드**: React 18, TypeScript, Vite, Ant Design v4
 - **백엔드**: Spring Boot 3.3.8, Java 17
 - **데이터베이스**: MySQL 8.0
 - **인프라**: Docker Compose

@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Button, Layout, Typography } from 'antd';
+import './App.css';
+
+const { Header, Content, Footer } = Layout;
+const { Title } = Typography;
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout className="layout">
+      <Header>
+        <Title level={3} style={{ color: 'white', marginTop: 15 }}>
+          Clush
+        </Title>
+      </Header>
+      <Content style={{ padding: '50px 50px 0 50px', minHeight: 'calc(100vh - 64px)' }}>
+        <div className="site-layout-content">
+          <Button type="primary">Ant Design 버튼 예시</Button>
+        </div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        Clush Project ©{new Date().getFullYear()}
+      </Footer>
+    </Layout>
+  );
 }
 
-export default App
+export default App;
