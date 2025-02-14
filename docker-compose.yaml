@@ -31,8 +31,11 @@ services:
     ports:
       - "3000:5173"
     volumes:
-    - ./frontend:/app
-    - /app/node_modules
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # 파일 변경 감지 활성화
+      - WATCHPACK_POLLING=true     # 폴링 방식 설정
     depends_on:
       - backend
     networks:
