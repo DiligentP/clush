@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS clush_db;
+USE clush_db;
