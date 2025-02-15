@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layout } from 'antd';
+import { Layout, Button, Modal } from 'antd';
 import useCalendar from './hooks/useCalendar';
 import MainHeader from './components/MainHeader';
 import CalendarView from './components/CalendarView';
@@ -17,9 +17,16 @@ export default function App() {
     setCurrentDate 
   } = useCalendar();
   const [isMenuOpen, setIsMenuOpen] = useState(true); // 메뉴가 기본으로 열린 상태 유지
+  const [selectedDate, setSelectedDate] = useState<Moment | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleDateSelect = (date: Moment) => {
+    setSelectedDate(date);
+    setModalVisible(true);
   };
 
   return (
@@ -47,8 +54,22 @@ export default function App() {
           }}
           onMonthChange={handleMonthChange}
           onToday={() => setCurrentDate(moment())}
+          onDateSelect={handleDateSelect}
         />
       </Content>
+      <Modal
+        title={`일정 추가 - ${selectedDate?.format('YYYY년 MM월 DD일')}`}
+        open={modalVisible}
+        onOk={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+        footer={[
+          <Button key="submit" type="primary" onClick={() => setModalVisible(false)}>
+            확인
+          </Button>
+        ]}
+      >
+        <p>여기에 일정 입력 폼을 추가하세요</p>
+      </Modal>
       <Footer className="app-footer">
         Clush Project ©{new Date().getFullYear()}
       </Footer>
