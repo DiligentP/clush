@@ -32,18 +32,8 @@ function App() {
 
   return (
     <Layout className="layout">
-      <Header style={{ 
-        height: 64, 
-        lineHeight: '64px',
-        backgroundColor: '#001529', // Ant Design 기본 다크 블루
-        padding: '0 24px 8px 24px' // 하단 패딩 8px 추가
-      }}>
-        <Title level={3} style={{ 
-          color: 'white', 
-          margin: 0,
-          lineHeight: '56px', // 64px - 8px(하단 패딩) = 56px
-          paddingTop: '8px' // 상단 패딩 추가
-        }}>
+      <Header style={headerStyles.container}>
+        <Title level={3} style={headerStyles.title}>
           Clush 캘린더
         </Title>
       </Header>
@@ -54,41 +44,21 @@ function App() {
             onPanelChange={onPanelChange}
             value={currentDate}
             headerRender={({ value }) => (
-              <div style={{
-                padding: 10,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 16,
-                transition: 'all 0.3s ease' // 애니메이션 추가
-              }}>
+              <div style={calendarHeaderStyles.container}>
                 <Button
                   shape="circle"
                   icon={<LeftOutlined />}
                   onClick={() => handleMonthChange(-1)}
-                  style={{ 
-                    background: '#f0f0f0', 
-                    border: 0,
-                    transform: 'scale(1)',
-                    ':hover': { transform: 'scale(1.1)' }
-                  }}
+                  style={calendarHeaderStyles.button}
                 />
-                <Title level={4} style={{ 
-                  margin: 0,
-                  opacity: 1,
-                  transition: 'opacity 0.3s' 
-                }}>
+                <Title level={4} style={calendarHeaderStyles.title}>
                   {value.format('YYYY년 MM월')}
                 </Title>
                 <Button
                   shape="circle"
                   icon={<RightOutlined />}
                   onClick={() => handleMonthChange(1)}
-                  style={{ 
-                    background: '#f0f0f0', 
-                    border: 0,
-                    transform: 'scale(1)',
-                    ':hover': { transform: 'scale(1.1)' }
-                  }}
+                  style={calendarHeaderStyles.button}
                 />
               </div>
             )}
@@ -103,3 +73,39 @@ function App() {
 }
 
 export default App;
+
+const headerStyles = {
+  container: {
+    height: 64,
+    lineHeight: '64px',
+    backgroundColor: '#001529',
+    padding: '0 24px 8px 24px'
+  },
+  title: {
+    color: 'white',
+    margin: 0,
+    lineHeight: '56px',
+    paddingTop: '8px'
+  }
+};
+
+const calendarHeaderStyles = {
+  container: {
+    padding: 10,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+    transition: 'all 0.3s ease'
+  },
+  button: {
+    background: '#f0f0f0',
+    border: 0,
+    transform: 'scale(1)',
+    ':hover': { transform: 'scale(1.1)' }
+  },
+  title: {
+    margin: 0,
+    opacity: 1,
+    transition: 'opacity 0.3s'
+  }
+};
