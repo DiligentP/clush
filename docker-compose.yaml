@@ -4,7 +4,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: clush_db
-      MYSQL_DATABASE_TEST: clush_db_test
     ports:
       - "3306:3306"
     volumes:
