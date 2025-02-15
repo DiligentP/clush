@@ -18,18 +18,20 @@ export default function CalendarView({
   onToday: () => void;
 }) {
   return (
-    <Calendar
-      value={currentDate}
-      mode={mode}
-      onPanelChange={(date, mode) => onPanelChange(date, mode)}
-      headerRender={({ value }) => (
-        <CalendarHeader 
-          value={value} 
-          onMonthChange={onMonthChange} 
-          onToday={onToday}
-        />
-      )}
-      dateCellRender={CalendarEvents}
-    />
+    <div className="calendar-container">
+      <Calendar
+        value={currentDate}
+        mode={mode}
+        onPanelChange={(date, mode) => onPanelChange(date, mode)}
+        headerRender={({ value }) => (
+          <CalendarHeader 
+            value={value} 
+            onMonthChange={onMonthChange} 
+            onToday={onToday}
+          />
+        )}
+        dateCellRender={CalendarEvents}
+      />
+    </div>
   );
 } 

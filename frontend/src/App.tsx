@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Layout } from 'antd';
 import useCalendar from './hooks/useCalendar';
 import MainHeader from './components/MainHeader';
@@ -15,11 +16,26 @@ export default function App() {
     handleMonthChange, 
     setCurrentDate 
   } = useCalendar();
+  const [isMenuOpen, setIsMenuOpen] = useState(true); // 메뉴가 기본으로 열린 상태 유지
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <Layout className="layout">
-      <MainHeader />
-      <Content style={{ padding: '20px 50px' }}>
+    <Layout className={`layout ${isMenuOpen ? 'drawer-open' : ''}`}>
+      <MainHeader toggleMenu={toggleMenu} />
+      <div className={`drawer ${isMenuOpen ? 'open' : ''}`}>
+        <div className="menu-content">
+          <h3>메뉴</h3>
+          <ul>
+            <li>캘린더 설정</li>
+            <li>카테고리 관리</li>
+            <li>알림 설정</li>
+          </ul>
+        </div>
+      </div>
+      <Content className="content" style={{ padding: '20px 50px' }}>
         <CalendarView
           currentDate={currentDate}
           mode={mode}

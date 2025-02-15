@@ -144,3 +144,46 @@
   font-size: 12px;
   color: #666;
 }
+
+.layout {
+  display: flex;
+  transition: margin-left 0.3s ease;
+}
+
+.drawer {
+  position: fixed;
+  top: 64px; /* 헤더 높이에 맞춤 */
+  left: -250px;
+  width: 250px;
+  height: calc(100% - 64px);
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.drawer.open {
+  left: 0;
+}
+
+.content {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+}
+
+.drawer-open .content {
+  margin-left: 250px;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+  .drawer {
+    width: 200px;
+  }
+  
+  .drawer-open .content {
+    margin-left: 200px;
+  }
+}
