@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
@@ -61,8 +63,8 @@ public class CalendarService {
     // 월별 일정 조회
     @Transactional(readOnly = true)
     public List<CalendarEventResponse> getEventsByMonth(int year, int month) {
-        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime end = start.plusMonths(1).minusSeconds(1);
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.with(TemporalAdjusters.lastDayOfMonth());
         return calendarEventRepository.findByStartDateBetween(start, end).stream()
                 .map(calendarEventMapper::toResponse)
                 .toList();

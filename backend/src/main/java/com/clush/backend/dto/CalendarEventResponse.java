@@ -1,6 +1,7 @@
 package com.clush.backend.dto;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.Builder;
 
@@ -9,8 +10,8 @@ public record CalendarEventResponse(
     Long id,
     String title,
     String description,
-    LocalDateTime startDate,
-    LocalDateTime endDate,
+    LocalDate startDate,
+    LocalDate endDate,
     String color,
     boolean allDay,
     LocalDateTime createdAt,

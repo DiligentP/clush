@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,10 +29,10 @@ public class CalendarEvent {
     private String description;
     
     @Column(nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
     
     @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
     
     private String color;
     private boolean allDay;
@@ -46,8 +47,8 @@ public class CalendarEvent {
     @Column(nullable = true)
     private LocalDateTime deletedAt;
 
-    public void updateDetails(String title, String description, LocalDateTime startDate, 
-                             LocalDateTime endDate, String color, boolean allDay) {
+    public void updateDetails(String title, String description, LocalDate startDate, 
+                             LocalDate endDate, String color, boolean allDay) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
