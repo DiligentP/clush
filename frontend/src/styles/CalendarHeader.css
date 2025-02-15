@@ -1,0 +1,29 @@
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.date-display {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0 15px;
+}
+
+@media (max-width: 768px) {
+  .calendar-header {
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+
+  .date-display {
+    font-size: 1em;
+    margin: 10px 0;
+  }
+
+  .calendar-header button {
+    margin: 5px 0;
+  }
+} 

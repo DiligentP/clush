@@ -6,23 +6,67 @@
 }
 
 .ant-picker-calendar {
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  overflow: hidden;
+  border: none !important;
+  background: #fff;
+}
+
+.ant-picker-calendar .ant-picker-panel {
+  border-top: 1px solid #e0e0e0 !important;
+}
+
+.ant-picker-cell-in-view {
+  border-right: 1px solid #e0e0e0 !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  height: 120px !important;
+  vertical-align: top;
+  padding: 8px !important;
+}
+
+.ant-picker-calendar-header {
+  padding: 16px 24px !important;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* 날짜 헤더 스타일 */
+.ant-picker-calendar-date {
+  margin: -8px -8px 0 -8px !important;
+  padding: 8px;
+  font-weight: 500;
+  color: #5f6368;
+}
+
+/* 주말 색상 */
+.ant-picker-cell-in-view[title*="토요일"] .ant-picker-calendar-date {
+  color: #1a73e8 !important;
+}
+
+.ant-picker-cell-in-view[title*="일요일"] .ant-picker-calendar-date {
+  color: #dc3545 !important;
+}
+
+/* 호버 효과 */
+.ant-picker-cell:hover {
+  background: #f8f9fa !important;
+}
+
+/* 현재 월이 아닌 날짜 */
+.ant-picker-cell-in-view.ant-picker-cell-out-month .ant-picker-calendar-date {
+  color: #dadce0 !important;
 }
 
 .app-header {
-  height: 64px;
-  line-height: 64px;
-  background-color: #001529;
-  padding: 0 24px 8px 24px;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px !important;
 }
 
 .header-title {
-  color: white;
-  margin: 0;
-  line-height: 56px;
-  padding-top: 8px;
+  color: #3c4043 !important;
+  font-weight: 500;
+  font-size: 22px !important;
 }
 
 .calendar-header {
@@ -34,17 +78,69 @@
 }
 
 .nav-button {
-  background: #f0f0f0 !important;
-  border: 0;
-  transform: scale(1);
+  background: transparent !important;
+  border: 1px solid #dadce0 !important;
 }
 
 .nav-button:hover {
-  transform: scale(1.1) !important;
+  background: #f8f9fa !important;
 }
 
 .month-title {
+  color: #3c4043;
+  font-size: 22px !important;
+  font-weight: 400 !important;
+}
+
+/* 기존 Ant Design의 오늘 날짜 스타일 제거 */
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: none !important;
+}
+
+/* 커스텀 오늘 날짜 스타일 */
+.custom-today-highlight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background-color: #1890ff;
+  border-radius: 50%;
+  opacity: 0.15;
+}
+
+/* 이벤트 배지 스타일 */
+.events {
   margin: 0;
-  opacity: 1;
-  transition: opacity 0.3s;
+  padding: 0;
+  list-style: none;
+}
+
+.events .ant-badge-status {
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 2px 0;
+  background: rgba(255,255,255,0.9);
+}
+
+.notes-month {
+  font-size: 14px;
+  text-align: center;
+}
+
+.notes-month section {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.notes-month span {
+  font-size: 12px;
+  color: #666;
 }
