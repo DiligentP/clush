@@ -1,5 +1,5 @@
 import { Calendar, Layout, Typography, Button } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { LeftOutlined, RightOutlined, HomeOutlined } from '@ant-design/icons';
 import type { CalendarMode } from 'antd/es/calendar/generateCalendar';
 import { useState } from 'react';
 import './App.css';
@@ -36,6 +36,12 @@ function App() {
         <Title level={3} style={headerStyles.title}>
           Clush 캘린더
         </Title>
+        <Button 
+          shape="circle" 
+          icon={<HomeOutlined />}
+          onClick={() => setCurrentDate(moment())}
+          className="nav-button"
+        />
       </Header>
       <Content style={{ padding: '20px 50px', minHeight: 'calc(100vh - 64px)' }}>
         <div className="site-layout-content">
