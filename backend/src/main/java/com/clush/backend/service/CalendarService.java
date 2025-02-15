@@ -57,4 +57,14 @@ public class CalendarService {
             return null;
         // 구현 예정
     }
+
+    // 월별 일정 조회
+    @Transactional(readOnly = true)
+    public List<CalendarEventResponse> getEventsByMonth(int year, int month) {
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime end = start.plusMonths(1).minusSeconds(1);
+        return calendarEventRepository.findByStartDateBetween(start, end).stream()
+                .map(calendarEventMapper::toResponse)
+                .toList();
+    }
 } 
