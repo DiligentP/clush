@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,19 +24,19 @@ public class CalendarController {
     // 월별 일정 조회
     @Operation(summary = "월별 일정 조회", description = "특정 년/월의 일정 목록을 반환")
     @GetMapping("/{year}/{month}")
-    public List<CalendarEventResponse> getMonthlyEvents(
+    public ResponseEntity<List<CalendarEventResponse>> getMonthlyEvents(
             @PathVariable @Min(1) @Max(9999) int year,
             @PathVariable @Min(1) @Max(12) int month
     ) {
         log.info("월별 일정 조회 요청 - 년: {}, 월: {}", year, month);
-        return calendarService.getEventsByMonth(year, month);
+        return ResponseEntity.ok(calendarService.getEventsByMonth(year, month));
     }
 
     // 일정 생성
     @Operation(summary = "일정 생성", description = "새로운 일정을 생성합니다")
     @PostMapping
-    public CalendarEventResponse createEvent(@RequestBody CalendarEventRequest request) {
+    public ResponseEntity<CalendarEventResponse> createEvent(@RequestBody CalendarEventRequest request) {
         log.info("일정 생성 요청 - 제목: {}", request.getTitle());
-        return calendarService.createEvent(request);
+        return ResponseEntity.ok(calendarService.createEvent(request));
     }
 } 

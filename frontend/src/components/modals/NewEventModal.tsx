@@ -23,21 +23,24 @@ export default function NewEventModal({
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      const start = values.dates[0].startOf('day');
-      const end = values.isAllDay 
-        ? start.clone().endOf('day')  // 종일 일정 시 시작일과 동일한 날짜
-        : values.dates[1].endOf('day');
+    form
+      .validateFields()
+      .then(values => {
+        const start = values.dates[0].startOf('day');
+        const end = values.isAllDay 
+          ? start.clone().endOf('day')
+          : values.dates[1].endOf('day');
 
-      onSubmit(
-        values.title,
-        values.description || '',
-        values.isAllDay || false,
-        start,
-        end
-      );
-      form.resetFields();
-    });
+        onSubmit(
+          values.title,
+          values.description || '',
+          values.isAllDay || false,
+          start,
+          end
+        );
+        form.resetFields();
+      })
+      .catch(() => {}); // 유효성 검사 실패 시 처리
   };
 
   return (
@@ -49,7 +52,12 @@ export default function NewEventModal({
         <Button key="cancel" onClick={onCancel}>
           취소
         </Button>,
-        <Button key="submit" type="primary" onClick={handleSubmit}>
+        <Button 
+          key="submit" 
+          type="primary" 
+          onClick={handleSubmit}
+          htmlType="submit"
+        >
           확인
         </Button>
       ]}

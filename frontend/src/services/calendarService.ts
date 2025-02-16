@@ -7,7 +7,10 @@ export const CalendarAPI = {
   // 월별 일정 조회
   getMonthlyEvents: async (year: number, month: number): Promise<CalendarEvent[]> => {
     const response = await fetch(`${API_BASE}/${year}/${month + 1}`);
-    if (!response.ok) throw new Error('일정 조회 실패');
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`일정 조회 실패: ${errorText}`);
+    }
     return response.json();
   },
 
