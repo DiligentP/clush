@@ -50,4 +50,13 @@ public class CalendarController {
         log.info("일정 수정 요청 - ID: {}", id);
         return ResponseEntity.ok(calendarService.updateEvent(id, request));
     }
+
+    // 일정 삭제
+    @Operation(summary = "일정 삭제", description = "기존 일정을 삭제합니다")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        log.info("일정 삭제 요청 - ID: {}", id);
+        calendarService.deleteEvent(id);
+        return ResponseEntity.noContent().build();
+    }
 } 
