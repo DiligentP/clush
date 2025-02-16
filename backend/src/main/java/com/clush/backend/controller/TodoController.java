@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -49,5 +50,15 @@ public class TodoController {
         log.info("할일 삭제 요청 - ID: {}", id);
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "할일 상태 업데이트", description = "할일의 완료 상태를 업데이트합니다")
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<TodoResponse> updateTodoStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, Boolean> request
+    ) {
+        log.info("할일 상태 업데이트 요청 - ID: {}", id);
+        return ResponseEntity.ok(todoService.updateTodoStatus(id, request.get("completed")));
     }
 } 

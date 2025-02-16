@@ -112,6 +112,14 @@ class TodoServiceTest {
 
         when(todoRepository.findById(todoId)).thenReturn(Optional.of(existingTodo));
         when(todoRepository.save(any(Todo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(todoMapper.toResponse(any(Todo.class))).thenAnswer(invocation -> {
+            Todo todo = invocation.getArgument(0);
+            return TodoResponse.builder()
+                    .id(todo.getId())
+                    .title(todo.getTitle())
+                    .completed(todo.isCompleted())
+                    .build();
+        });
 
         // when
         TodoResponse result = todoService.updateTodoStatus(todoId, newStatus);
