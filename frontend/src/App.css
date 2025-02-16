@@ -5,53 +5,60 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Ant Design 변수 확장 */
+:root {
+  --ant-primary-color: #1890ff;
+  --ant-border-color-base: #f0f0f0;
+  --ant-border-radius-base: 12px;
+  --ant-box-shadow-base: 0 3px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* 캘린더 컨테이너 */
 .ant-picker-calendar {
-  border: none !important;
-  background: #fff;
+  background: var(--ant-component-background);
+  border: 1px solid var(--ant-border-color-base);
+  border-radius: var(--ant-border-radius-base);
+  box-shadow: var(--ant-box-shadow-base);
 }
 
-.ant-picker-calendar .ant-picker-panel {
-  border-top: 1px solid #e0e0e0 !important;
-}
-
+/* 캘린더 셀 */
 .ant-picker-cell-in-view {
-  border-right: 1px solid #e0e0e0 !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  height: 120px !important;
-  vertical-align: top;
-  padding: 8px !important;
-}
-
-.ant-picker-calendar-header {
-  padding: 16px 24px !important;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-/* 날짜 헤더 스타일 */
-.ant-picker-calendar-date {
-  margin: -8px -8px 0 -8px !important;
+  border-right: 1px solid var(--ant-border-color-base);
+  border-bottom: 1px solid var(--ant-border-color-base);
   padding: 8px;
+  transition: background 0.2s var(--ant-ease-out);
+}
+
+/* 날짜 표시 */
+.ant-picker-calendar-date {
+  color: var(--ant-text-color);
   font-weight: 500;
-  color: #5f6368;
 }
 
 /* 주말 색상 */
 .ant-picker-cell-in-view[title*="토요일"] .ant-picker-calendar-date {
-  color: #1a73e8 !important;
+  color: color-mix(in srgb, var(--ant-primary-color) 80%, white);
 }
 
 .ant-picker-cell-in-view[title*="일요일"] .ant-picker-calendar-date {
-  color: #dc3545 !important;
+  color: color-mix(in srgb, #dc3545 80%, white);
+}
+
+/* 비활성화 날짜 */
+.ant-picker-cell-out-month .ant-picker-calendar-date {
+  color: var(--ant-disabled-color);
+  background: var(--ant-item-active-bg);
+}
+
+/* 헤더 영역 */
+.ant-picker-calendar-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--ant-border-color-split);
 }
 
 /* 호버 효과 */
 .ant-picker-cell:hover {
   background: #f8f9fa !important;
-}
-
-/* 현재 월이 아닌 날짜 */
-.ant-picker-cell-in-view.ant-picker-cell-out-month .ant-picker-calendar-date {
-  color: #dadce0 !important;
 }
 
 /* 모달 커스터마이징 */
@@ -201,6 +208,14 @@
   .drawer-open .content {
     margin-left: 200px;
   }
+  
+  .ant-picker-calendar {
+    border-radius: calc(var(--ant-border-radius-base) * 0.5);
+  }
+  
+  .ant-picker-cell-in-view {
+    padding: 4px;
+  }
 }
 
 .menu-content button {
@@ -239,10 +254,6 @@
 .ant-picker-suffix {
   font-size: 14px !important;
   margin-left: 4px !important;
-}
-
-.ant-picker-cell-in-view {
-  padding: 8px !important;
 }
 
 .ant-picker-cell:hover .ant-picker-cell-inner {
