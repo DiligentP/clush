@@ -2,7 +2,7 @@
 ![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/f3c4d56f137fd2c024e5b40dedb6659c.png)
 **Clush Task Manager**는 할일 관리와 일정 관리를 통합한 생산성 관리 도구입니다.
 
-**주요기능**
+**주요 기능**
 - ✅**스마트 할일 관리**: 제목/설명 작성, 완료 상태 관리, 필터링 기능
 - ✅**통합 캘린더**: 월별 일정 조회, 드래그 앤 드롭으로 일정 이동
 - ❌ **일정 공유**: 공유 가능한 링크 생성을 통한 팀 일정 협업
@@ -27,9 +27,7 @@ cd clush-assignment
 ```
 2. **Docker Compose 실행**
 ```bash
-docker-compose up --build
-또는
-docker compose up --build
+docker-compose up --build  또는  docker compose up --build
 ```
 
 | 서비스    | URL                          | 비고                          |
