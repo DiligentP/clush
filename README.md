@@ -58,7 +58,7 @@ docker compose up --build
 | 백엔드 API | https://clush-be.diligentp.com    | Swagger 문서 리다이렉트 |
 
 ## API 명세서
-![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/4ce8bcc62e2a3537e4ba1293b93cb085.png)
+![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/281009a38e03c716ac5e03c8cda2aba6.png)
 https://clush-be.diligentp.com
 
 
