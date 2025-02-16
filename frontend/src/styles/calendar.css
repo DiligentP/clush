@@ -23,4 +23,15 @@
 .ant-picker-cell-inner {
   min-height: 120px !important;
   align-items: flex-start !important;
+}
+
+/* 드래그 앤 드롭 스타일 추가 */
+.calendar-event-badge.dragging {
+  opacity: 0.5;
+  background: #e6f7ff;
+}
+
+.calendar-events-container.drop-over {
+  background: #f6ffed;
+  border: 2px dashed #73d13d;
 } 

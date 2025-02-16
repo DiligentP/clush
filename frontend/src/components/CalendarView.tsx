@@ -56,6 +56,50 @@ export default function CalendarView({
     onDateSelect(date);
   };
 
+  const handleDragStart = (e: React.DragEvent, event: CalendarEvent) => {
+    e.dataTransfer.setData('text/plain', JSON.stringify(event));
+    e.currentTarget.classList.add('dragging');
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('drop-over');
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    e.currentTarget.classList.remove('dragging');
+    // 모든 드롭 영역 하이라이트 제거
+    document.querySelectorAll('.calendar-events-container').forEach(el => {
+      el.classList.remove('drop-over');
+    });
+  };
+
+  const handleDrop = async (e: React.DragEvent, date: Moment) => {
+    e.preventDefault();
+    const eventData = JSON.parse(e.dataTransfer.getData('text/plain'));
+    const newStart = date.clone().startOf('day');
+    const dayDiff = moment(eventData.endDate).diff(moment(eventData.startDate), 'days');
+
+    try {
+      await CalendarAPI.updateEvent(
+        eventData.id,
+        eventData.title,
+        eventData.description,
+        newStart,
+        newStart.clone().add(dayDiff, 'days'),
+        eventData.allDay
+      );
+      fetchEvents();
+    } catch (error) {
+      console.error('일정 이동 실패:', error);
+    }
+    e.currentTarget.classList.remove('drop-over');
+    // 인접한 셀의 하이라이트도 제거
+    (e.currentTarget as HTMLElement).closest('.ant-picker-cell')!
+      .querySelectorAll('.calendar-events-container')
+      .forEach(el => el.classList.remove('drop-over'));
+  };
+
   // 날짜별 렌더링 처리
   const dateCellRender = (date: Moment) => {
     const dayEvents = events.filter(event => 
@@ -63,7 +107,12 @@ export default function CalendarView({
     );
 
     return (
-      <div className="calendar-events-container">
+      <div 
+        className="calendar-events-container"
+        onDragOver={handleDragOver}
+        onDrop={(e) => handleDrop(e, date)}
+        onDragLeave={(e) => e.currentTarget.classList.remove('drop-over')}
+      >
         {dayEvents.map(event => (
           <div
             key={event.id}
@@ -73,6 +122,9 @@ export default function CalendarView({
               e.stopPropagation();
               onEventSelect(event);
             }}
+            draggable
+            onDragStart={(e) => handleDragStart(e, event)}
+            onDragEnd={handleDragEnd}
           >
             {event.title}
           </div>
