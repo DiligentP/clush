@@ -4,6 +4,7 @@ import com.clush.backend.dto.CalendarEventRequest;
 import com.clush.backend.dto.CalendarEventResponse;
 import com.clush.backend.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/calendar")
+@Tag(name = "캘린더 API")
 public class CalendarController {
 
     private final CalendarService calendarService;

@@ -4,6 +4,7 @@ import com.clush.backend.dto.TodoRequest;
 import com.clush.backend.dto.TodoResponse;
 import com.clush.backend.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/todos")
+@Tag(name = "투두리스트 API")
 public class TodoController {
 
     private final TodoService todoService;
