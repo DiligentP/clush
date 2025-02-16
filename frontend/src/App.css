@@ -340,7 +340,6 @@
   background: #fff;
   border-radius: 8px 8px 0 0;
   margin-bottom: -1px; /* 캘린더와의 경계선 겹침 방지 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   z-index: 1;
   position: relative;
 }
