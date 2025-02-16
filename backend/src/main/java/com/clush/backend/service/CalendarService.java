@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,8 +70,12 @@ public class CalendarService {
     public List<CalendarEventResponse> getEventsByMonth(int year, int month) {
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.with(TemporalAdjusters.lastDayOfMonth());
-        return calendarEventRepository.findByStartDateBetween(start, end).stream()
+        List<CalendarEvent> events = calendarEventRepository.findByStartDateBetween(start, end);
+        if(events == null || events.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return events.stream()
                 .map(calendarEventMapper::toResponse)
-                .toList();
+                .collect(Collectors.toList());
     }
 } 
