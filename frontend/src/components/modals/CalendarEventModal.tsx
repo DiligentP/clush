@@ -9,6 +9,7 @@ export default function CalendarEventModal({
   selectedEvent,
   onCancel, 
   onSubmit,
+  onDelete,
   initialTitle = ''
 }: CalendarEventModalProps) {
   const [form] = Form.useForm();
@@ -71,6 +72,19 @@ export default function CalendarEventModal({
         onCancel();
       }}
       footer={[
+        selectedEvent && (
+          <Button 
+            key="delete" 
+            danger 
+            onClick={() => {
+              onDelete?.();
+              form.resetFields();
+            }}
+            style={{ position: 'absolute', left: 24, bottom: 16 }}
+          >
+            삭제
+          </Button>
+        ),
         <Button key="cancel" onClick={() => {
           form.resetFields();
           onCancel();
@@ -145,7 +159,7 @@ export default function CalendarEventModal({
               });
             }}
           >
-            종일 일정으로 설정
+            하루 종일
           </Checkbox>
         </Form.Item>
 

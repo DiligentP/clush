@@ -128,6 +128,16 @@ export default function App() {
                 })
             }
           }}
+          onDelete={() => {
+            if(selectedEvent) {
+              CalendarAPI.deleteEvent(selectedEvent.id)
+                .then(() => {
+                  setEventModalVisible(false);
+                  setCurrentMonth(currentMonth.clone());
+                  setSelectedEvent(undefined);
+                });
+            }
+          }}
         />
         <NewTaskModal
           visible={taskModalVisible}

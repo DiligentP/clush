@@ -14,6 +14,7 @@ export interface CalendarEventModalProps {
   selectedDate: Moment;
   selectedEvent?: CalendarEvent;
   onCancel: () => void;
+  onDelete?: () => void;
   onSubmit: (
     title: string, 
     description: string,

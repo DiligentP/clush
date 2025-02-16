@@ -59,5 +59,10 @@ export const CalendarAPI = {
     });
     if (!response.ok) throw new Error('일정 수정 실패');
     return response.json();
+  },
+
+  // 일정 삭제
+  deleteEvent: async (id: number): Promise<void> => {
+    await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
   }
 }; 
