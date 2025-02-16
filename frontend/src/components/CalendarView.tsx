@@ -1,17 +1,12 @@
 import '../styles/calendar.css';
 import { Calendar } from 'antd';
+import moment from 'moment';
 import type { Moment } from 'moment';
 import { useEffect, useState } from 'react';
-import CustomCalendarHeader from './headers/CustomCalendarHeader.tsx';
-import moment from 'moment';
-import { CalendarAPI } from '../services/calendarService';
 
-interface CalendarViewProps {
-  currentMonth: Moment;
-  onPanelChange: (date: Moment) => void;
-  selectedDate: Moment;
-  onDateSelect: (date: Moment) => void;
-}
+import CustomCalendarHeader from './headers/CustomCalendarHeader';
+import { CalendarAPI } from '../services/calendarService';
+import type { CalendarViewProps, CalendarEvent } from '../types/calendar';
 
 export default function CalendarView({ 
   currentMonth,
@@ -99,12 +94,4 @@ export default function CalendarView({
       />
     </div>
   );
-}
-
-interface CalendarEvent {
-  id: number;
-  title: string;
-  startDate: Moment;
-  endDate: Moment;
-  description?: string;
 } 

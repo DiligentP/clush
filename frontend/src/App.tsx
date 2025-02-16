@@ -1,18 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Layout, Button, ConfigProvider } from 'antd';
-import MainHeader from './components/MainHeader';
-import './App.css';
-import NewEventModal from './components/modals/NewEventModal';
-import NewTaskModal from './components/modals/NewTaskModal';
-import TodoList from './components/TodoList';
-import CalendarView from './components/CalendarView';
+import {useEffect, useState} from 'react';
+import {Button, ConfigProvider, Layout} from 'antd';
 import moment from 'moment';
 import koKR from 'antd/es/locale/ko_KR';
-import { CalendarAPI } from './services/calendarService';
+
+// Components
+import MainHeader from './components/MainHeader';
+import CalendarView from './components/CalendarView';
+import TodoList from './components/TodoList';
+import NewTaskModal from './components/modals/NewTaskModal';
+import CalendarEventModal from './components/modals/CalendarEventModal';
+
+// Services & Styles
+import {CalendarAPI} from './services/calendarService';
+import './App.css';
 
 const { Content, Footer } = Layout;
 
 moment.locale('ko');
+
+interface TodoItem {
+  id: string;
+  title: string;
+  completed: boolean;
+}
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -81,11 +91,11 @@ export default function App() {
           <CalendarView 
             currentMonth={currentMonth}
             selectedDate={selectedDate}
-            onPanelChange={(date) => setCurrentMonth(date)}
+            onPanelChange={(date: moment.Moment) => setCurrentMonth(date)}
             onDateSelect={setSelectedDate}
           />
         </Content>
-        <NewEventModal
+        <CalendarEventModal
           visible={eventModalVisible}
           selectedDate={selectedDate}
           onCancel={() => setEventModalVisible(false)}
@@ -112,10 +122,4 @@ export default function App() {
       </Layout>
     </ConfigProvider>
   );
-}
-
-interface TodoItem {
-  id: string;
-  title: string;
-  completed: boolean;
 }

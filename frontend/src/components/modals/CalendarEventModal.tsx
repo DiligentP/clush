@@ -1,28 +1,15 @@
 import { Modal, Form, Input, Button, DatePicker, Checkbox } from 'antd';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { useState, useEffect } from 'react';
+import { CalendarEventModalProps } from '../../types/calendar';
 
-interface NewEventModalProps {
-  visible: boolean;
-  selectedDate: Moment;
-  onCancel: () => void;
-  onSubmit: (
-    title: string, 
-    description: string,
-    isAllDay: boolean,
-    startDate: Moment, 
-    endDate: Moment
-  ) => void;
-  initialTitle?: string;
-}
-
-export default function NewEventModal({ 
+export default function CalendarEventModal({
   visible, 
   selectedDate, 
   onCancel, 
   onSubmit,
   initialTitle = ''
-}: NewEventModalProps) {
+}: CalendarEventModalProps) {
   const [form] = Form.useForm();
   const [mounted, setMounted] = useState(false);
 
