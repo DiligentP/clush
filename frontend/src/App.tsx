@@ -8,6 +8,7 @@ import TodoList from './components/TodoList';
 import CalendarView from './components/CalendarView';
 import moment from 'moment';
 import koKR from 'antd/es/locale/ko_KR';
+import { CalendarAPI } from './services/calendarService';
 
 const { Content, Footer } = Layout;
 
@@ -87,15 +88,13 @@ export default function App() {
         <NewEventModal
           visible={eventModalVisible}
           onCancel={() => setEventModalVisible(false)}
-          onSubmit={(title, description, isAllDay, startDate, endDate) => {
-            console.log('새 일정 추가:', { 
-              title, 
-              description,
-              isAllDay,
-              startDate: startDate.format(),
-              endDate: endDate.format() 
-            });
-            setEventModalVisible(false);
+          onSubmit={(title, description, isAllDay, start, end) => {
+            CalendarAPI.createEvent(title, description, start, end, isAllDay)
+              .then(() => {
+                setEventModalVisible(false);
+                setCurrentMonth(moment());
+              })
+              .catch(error => console.error('Error:', error));
           }}
         />
         <NewTaskModal

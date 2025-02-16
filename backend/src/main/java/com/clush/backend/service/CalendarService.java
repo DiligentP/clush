@@ -3,13 +3,14 @@ package com.clush.backend.service;
 import com.clush.backend.dto.CalendarEventRequest;
 import com.clush.backend.dto.CalendarEventResponse;
 import com.clush.backend.mapper.CalendarEventMapper;
+import com.clush.backend.model.CalendarEvent;
 import com.clush.backend.repository.CalendarEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class CalendarService {
 
     @Transactional
     public CalendarEventResponse createEvent(CalendarEventRequest request) {
-            return null;
+        CalendarEvent event = calendarEventMapper.toEntity(request);
+        CalendarEvent savedEvent = calendarEventRepository.save(event);
+        return calendarEventMapper.toResponse(savedEvent);
     }
 
     @Transactional

@@ -3,6 +3,7 @@ import type { Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import CustomCalendarHeader from './headers/CustomCalendarHeader.tsx';
 import moment from 'moment';
+import { CalendarAPI } from '../services/calendarService';
 
 interface CalendarViewProps {
   currentMonth: Moment;
@@ -19,10 +20,10 @@ export default function CalendarView({
   // 월별 일정 조회 API 호출
   const fetchEvents = async () => {
     try {
-      const response = await fetch(
-        `/api/calendar/${currentMonth.year()}/${currentMonth.month() + 1}`
+      const data = await CalendarAPI.getMonthlyEvents(
+        currentMonth.year(),
+        currentMonth.month()
       );
-      const data = await response.json();
       setEvents(data);
     } catch (error) {
       console.error('일정 조회 실패:', error);
