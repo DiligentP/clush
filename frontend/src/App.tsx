@@ -23,6 +23,7 @@ export default function App() {
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [filter, setFilter] = useState<'all' | 'completed' | 'active'>('all');
 
   useEffect(() => {
     const saved = localStorage.getItem('todos');
@@ -62,7 +63,13 @@ export default function App() {
           </Button>
           <div style={{ marginTop: 24 }}>
             <TodoList
-              todos={todos}
+              todos={todos.filter(todo => {
+                if (filter === 'completed') return todo.completed;
+                if (filter === 'active') return !todo.completed;
+                return true;
+              })}
+              currentFilter={filter}
+              onFilterChange={setFilter}
               onToggle={(id) => {
                 setTodos(todos.map(todo => 
                   todo.id === id ? {...todo, completed: !todo.completed} : todo

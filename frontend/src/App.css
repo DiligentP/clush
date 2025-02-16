@@ -295,3 +295,20 @@
 .ant-list-item {
   padding: 8px 0 !important;
 }
+
+.todo-list-container .ant-tabs {
+  margin: -16px -16px 16px -16px;
+}
+
+.todo-list-container .ant-tabs-nav {
+  padding: 0 16px;
+}
+
+.todo-list-container .ant-tabs-tab {
+  padding: 12px 0;
+  margin: 0 16px 0 0;
+}
+
+.todo-list-container .ant-list {
+  margin-top: 8px;
+}
