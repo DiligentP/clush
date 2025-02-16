@@ -1,10 +1,16 @@
-import { Modal, Form, Input, Button, DatePicker } from 'antd';
+import { Modal, Form, Input, Button, DatePicker, Checkbox } from 'antd';
 import moment, { Moment } from 'moment';
 
 interface NewEventModalProps {
   visible: boolean;
   onCancel: () => void;
-  onSubmit: (title: string, startDate: Moment, endDate: Moment) => void;
+  onSubmit: (
+    title: string, 
+    description: string,
+    isAllDay: boolean,
+    startDate: Moment, 
+    endDate: Moment
+  ) => void;
   initialTitle?: string;
 }
 
@@ -18,10 +24,17 @@ export default function NewEventModal({
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
+      const start = values.dates[0].startOf('day');
+      const end = values.isAllDay 
+        ? start.clone().endOf('day')  // 종일 일정 시 시작일과 동일한 날짜
+        : values.dates[1].endOf('day');
+
       onSubmit(
         values.title,
-        values.dates[0].startOf('day'),
-        values.dates[1].endOf('day')
+        values.description || '',
+        values.isAllDay || false,
+        start,
+        end
       );
       form.resetFields();
     });
@@ -55,12 +68,18 @@ export default function NewEventModal({
           label="기간"
           rules={[
             { required: true, message: '기간을 선택해주세요' },
-            () => ({
+            ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || value[0].isBefore(value[1])) {
-                  return Promise.resolve();
+                const isAllDay = getFieldValue('isAllDay');
+                if (!value) return Promise.resolve();
+                
+                if (isAllDay && !value[0].isSame(value[1], 'day')) {
+                  return Promise.reject('하루 종일 일정은 동일한 날짜를 선택해야 합니다');
                 }
-                return Promise.reject(new Error('종료일은 시작일 이후여야 합니다'));
+                if (!isAllDay && !value[0].isBefore(value[1])) {
+                  return Promise.reject('종료일은 시작일 이후여야 합니다');
+                }
+                return Promise.resolve();
               },
             }),
           ]}
@@ -70,6 +89,35 @@ export default function NewEventModal({
             format="YYYY-MM-DD"
             disabledDate={(current) => current && current < moment().startOf('day')}
             style={{ width: '100%' }}
+            disabled={form.getFieldValue('isAllDay')}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="isAllDay"
+          valuePropName="checked"
+          initialValue={false}
+        >
+          <Checkbox 
+            onChange={(e) => {
+              const now = moment().startOf('day');
+              form.setFieldsValue({ 
+                dates: e.target.checked ? [now, now] : null
+              });
+            }}
+          >
+            종일 일정으로 설정
+          </Checkbox>
+        </Form.Item>
+
+        <Form.Item
+          name="description"
+          label="설명"
+          rules={[{ max: 200, message: '200자 이내로 입력해주세요' }]}
+        >
+          <Input.TextArea 
+            rows={3} 
+            placeholder="일정에 대한 상세 설명을 입력하세요" 
           />
         </Form.Item>
       </Form>

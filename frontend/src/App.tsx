@@ -87,8 +87,14 @@ export default function App() {
         <NewEventModal
           visible={eventModalVisible}
           onCancel={() => setEventModalVisible(false)}
-          onSubmit={(title, startDate, endDate) => {
-            console.log('새 일정 추가:', { title, startDate: startDate.format(), endDate: endDate.format() });
+          onSubmit={(title, description, isAllDay, startDate, endDate) => {
+            console.log('새 일정 추가:', { 
+              title, 
+              description,
+              isAllDay,
+              startDate: startDate.format(),
+              endDate: endDate.format() 
+            });
             setEventModalVisible(false);
           }}
         />

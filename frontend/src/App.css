@@ -413,3 +413,21 @@
 .ant-picker-range .ant-picker-input > input {
   font-size: 14px !important;
 }
+
+/* 컬러 피커 스타일 조정 */
+.ant-color-picker-trigger {
+  border-radius: 4px !important;
+  border: 1px solid #d9d9d9 !important;
+  width: 40px !important;
+  height: 32px !important;
+}
+
+/* 체크박스 레이블 스타일 */
+.ant-checkbox-wrapper {
+  margin-left: 8px !important;
+}
+
+/* 설명 텍스트에리어 스타일 */
+.ant-input-textarea textarea {
+  resize: none !important;
+}
