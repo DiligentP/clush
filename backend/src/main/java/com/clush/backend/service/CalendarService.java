@@ -23,12 +23,14 @@ public class CalendarService {
     private final CalendarEventRepository calendarEventRepository;
     private final CalendarEventMapper calendarEventMapper;
 
+    // 전체 일정 조회
     @Transactional(readOnly = true)
     public List<CalendarEventResponse> getAllEvents() {
             return null;
 
     }
 
+    // 일정 생성
     @Transactional
     public CalendarEventResponse createEvent(CalendarEventRequest request) {
         CalendarEvent event = calendarEventMapper.toEntity(request);
@@ -36,6 +38,7 @@ public class CalendarService {
         return calendarEventMapper.toResponse(savedEvent);
     }
 
+    // 일정 수정
     @Transactional
     public CalendarEventResponse updateEvent(Long id, CalendarEventRequest request) {
         CalendarEvent existingEvent = calendarEventRepository.findById(id)
@@ -53,6 +56,7 @@ public class CalendarService {
         return calendarEventMapper.toResponse(updatedEvent);
     }
 
+    // 일정 삭제
     @Transactional
     public void deleteEvent(Long id) {
         calendarEventRepository.deleteById(id);
@@ -64,12 +68,14 @@ public class CalendarService {
         // 구현 예정
     }
 
+    // 일정 공유
     @Transactional
     public CalendarEventResponse shareEvent(Long eventId, String targetUser) {
             return null;
         // 구현 예정
     }
 
+    // 일정 검색
     @Transactional(readOnly = true)
     public List<CalendarEventResponse> searchEvents(String keyword) {
             return null;
