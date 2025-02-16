@@ -1,4 +1,6 @@
-import { Modal, Form, Input, Button } from 'antd';
+import { Modal, Form, Input, Button, message } from 'antd';
+import { TodoAPI } from '../../services/todoService';
+import { useState } from 'react';
 
 interface TodoItem {
   id: string;
@@ -9,25 +11,35 @@ interface TodoItem {
 interface NewTaskModalProps {
   visible: boolean;
   onCancel: () => void;
-  onSubmit: (todo: TodoItem) => void;
+  onSuccess: () => void;
 }
 
 export default function NewTaskModal({ 
   visible, 
-  onCancel, 
-  onSubmit
+  onCancel,
+  onSuccess
 }: NewTaskModalProps) {
   const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = () => {
-    form.validateFields().then(values => {
-      onSubmit({
-        id: Date.now().toString(),
-        title: values.title,
-        completed: false
-      });
+  // 할일 생성 핸들러
+  const handleSubmit = async () => {
+    try {
+      setSubmitting(true);
+      const values = await form.validateFields();
+      
+      await TodoAPI.createTodo(values.title, values.description);
+      message.success('할일이 성공적으로 추가되었습니다');
+      
       form.resetFields();
-    });
+      onSuccess();
+      onCancel();
+    } catch (error) {
+      console.error('할일 생성 오류:', error);
+      message.error('할일 추가에 실패했습니다');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -39,7 +51,13 @@ export default function NewTaskModal({
         <Button key="cancel" onClick={onCancel}>
           취소
         </Button>,
-        <Button key="submit" type="primary" onClick={handleSubmit}>
+        <Button 
+          key="submit" 
+          type="primary" 
+          onClick={handleSubmit}
+          loading={submitting}
+          disabled={submitting}
+        >
           확인
         </Button>
       ]}
@@ -51,6 +69,13 @@ export default function NewTaskModal({
           rules={[{ required: true, message: '제목을 입력해주세요' }]}
         >
           <Input placeholder="할일 내용을 입력하세요" />
+        </Form.Item>
+        
+        <Form.Item
+          name="description"
+          label="상세 설명"
+        >
+          <Input.TextArea rows={3} placeholder="추가 설명을 입력하세요 (선택사항)" />
         </Form.Item>
       </Form>
     </Modal>

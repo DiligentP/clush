@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Button, ConfigProvider, Layout} from 'antd';
+import {Button, ConfigProvider, Layout, message} from 'antd';
 import moment from 'moment';
 import koKR from 'antd/es/locale/ko_KR';
 
@@ -14,13 +14,14 @@ import CalendarEventModal from './components/modals/CalendarEventModal';
 import {CalendarAPI} from './services/calendarService';
 import './App.css';
 import { CalendarEvent } from './types/calendar';
+import { TodoAPI } from './services/todoService';
 
 const { Content, Footer } = Layout;
 
 moment.locale('ko');
 
 interface TodoItem {
-  id: string;
+  id: number;
   title: string;
   completed: boolean;
 }
@@ -36,13 +37,13 @@ export default function App() {
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | undefined>(undefined);
 
   useEffect(() => {
-    const saved = localStorage.getItem('todos');
-    if (saved) setTodos(JSON.parse(saved));
+    TodoAPI.getAllTodos()
+      .then(setTodos)
+      .catch(error => {
+        console.error('초기 데이터 로딩 실패:', error);
+        message.error('할일 목록을 불러오지 못했습니다');
+      });
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
 
   useEffect(() => {
     if (selectedEvent) {
@@ -90,6 +91,11 @@ export default function App() {
                 }}
                 onDelete={(id) => {
                   setTodos(todos.filter(todo => todo.id !== id));
+                }}
+                onEdit={(id, newTitle) => {
+                  setTodos(todos.map(todo => 
+                    todo.id === id ? {...todo, title: newTitle} : todo
+                  ));
                 }}
               />
             </div>
@@ -142,9 +148,10 @@ export default function App() {
         <NewTaskModal
           visible={taskModalVisible}
           onCancel={() => setTaskModalVisible(false)}
-          onSubmit={(title) => {
-            console.log('새 할일 추가:', title);
-            setTaskModalVisible(false);
+          onSuccess={() => {
+            TodoAPI.getAllTodos()
+              .then(setTodos)
+              .catch(error => message.error('할일 목록 갱신 실패'));
           }}
         />
         <Footer className="app-footer">

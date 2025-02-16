@@ -1,0 +1,27 @@
+.todo-list-item .actions {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.todo-list-item:hover .actions {
+  opacity: 1;
+}
+
+.todo-list-item {
+  padding: 2px 0 !important;
+  margin: -6px 0 !important;
+  min-height: 36px !important;
+}
+
+.todo-list-item .ant-list-item-action {
+  margin-left: 8px !important;
+}
+
+.todo-list-item .ant-list-item-meta {
+  margin-bottom: 0 !important;
+}
+
+.todo-list-item .ant-checkbox-wrapper {
+  align-items: flex-start !important;
+  padding: 4px 0 !important;
+} 

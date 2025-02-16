@@ -310,6 +310,19 @@
 
 .ant-list-item {
   padding: 8px 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.todo-list-item .ant-list-item-action {
+  margin-left: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+.todo-list-item .ant-checkbox-wrapper {
+  flex-grow: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .todo-list-container .ant-tabs {
@@ -326,7 +339,8 @@
 }
 
 .todo-list-container .ant-list {
-  margin-top: 8px;
+  margin-top: 0 !important;
+  padding: 0 8px !important;
 }
 
 .ant-picker-cell-selected .ant-picker-cell-inner {
