@@ -19,6 +19,9 @@
   border: 1px solid var(--ant-border-color-base);
   border-radius: var(--ant-border-radius-base);
   box-shadow: var(--ant-box-shadow-base);
+  height: 70vh; /* 뷰포트 높이의 70% */
+  min-height: 500px; /* 최소 높이 보장 */
+  overflow: hidden; /* 스크롤 방지 */
 }
 
 /* 캘린더 셀 */
@@ -175,9 +178,9 @@
 
 .drawer {
   position: fixed;
-  top: 64px; /* 헤더 높이에 맞춤 */
-  left: -250px;
-  width: 250px;
+  top: 64px;
+  left: -20%;
+  width: 20%;
   height: calc(100% - 64px);
   background-color: #fff;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -197,21 +200,23 @@
 }
 
 .drawer-open .content {
-  margin-left: 250px;
+  margin-left: 20%;
 }
 
 /* 반응형 처리 */
 @media (max-width: 768px) {
   .drawer {
-    width: 200px;
+    width: 60%;
+    left: -60%;
   }
   
   .drawer-open .content {
-    margin-left: 200px;
+    margin-left: 60%;
   }
   
   .ant-picker-calendar {
-    border-radius: calc(var(--ant-border-radius-base) * 0.5);
+    height: 60vh; /* 모바일에서 높이 조정 */
+    min-height: 400px;
   }
   
   .ant-picker-cell-in-view {
@@ -394,4 +399,13 @@
   padding: 0 12px !important;
   width: auto !important;
   min-width: 60px !important;
+}
+
+/* 캘린더 내부 패널 조정 */
+.ant-picker-calendar .ant-picker-panel {
+  height: calc(100% - 64px); /* 헤더 공간 제외 */
+}
+
+.ant-picker-calendar .ant-picker-content {
+  height: 100%;
 }
