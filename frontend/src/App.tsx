@@ -59,7 +59,7 @@ export default function App() {
         />
       </Content>
       <Modal
-        title={`일정 추가 - ${selectedDate?.format('YYYY년 MM월 DD일') || moment().format('YYYY년 MM월 DD일')}`}
+        title="일정 추가"
         open={modalVisible}
         onOk={() => setModalVisible(false)}
         onCancel={() => setModalVisible(false)}
