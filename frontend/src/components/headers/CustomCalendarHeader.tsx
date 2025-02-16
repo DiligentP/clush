@@ -7,12 +7,14 @@ interface CustomCalendarHeaderProps {
   value: Moment;
   onPrev: () => void;
   onNext: () => void;
+  onToday: () => void;
 }
 
 export default function CustomCalendarHeader({ 
   value, 
   onPrev, 
   onNext, 
+  onToday, 
 }: CustomCalendarHeaderProps) {
   return (
     <div className="compact-calendar-header">
@@ -37,6 +39,19 @@ export default function CustomCalendarHeader({
         className="square-nav-button"
         style={{ borderRadius: '4px' }}
       />
+      <Button
+        size="small"
+        onClick={onToday}
+        className="square-nav-button"
+        style={{ 
+          margin: '0 8px',
+          fontWeight: 500,
+          color: '#1890ff',
+          borderColor: '#1890ff'
+        }}
+      >
+        오늘
+      </Button>
     </div>
   );
 } 

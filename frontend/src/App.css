@@ -376,9 +376,22 @@
   background: #fff !important;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02) !important;
   margin-left: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
 }
 
 .square-nav-button:hover {
   border-color: #1890ff !important;
   color: #1890ff !important;
+  background: rgba(24, 144, 255, 0.05) !important;
+}
+
+/* 오늘 버튼 특정 스타일 */
+.square-nav-button:has(> :not(.ant-btn-icon)) {
+  margin: 0 12px !important; /* 좌우 마진 확대 */
+  padding: 0 12px !important;
+  width: auto !important;
+  min-width: 60px !important;
 }

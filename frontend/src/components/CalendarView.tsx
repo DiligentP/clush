@@ -41,12 +41,13 @@ export default function CalendarView({
   };
 
   // 헤더 컨트롤 핸들러
-  const handleHeaderControl = (mode: 'prev' | 'next' | 'current') => {
-    const newDate = currentMonth.clone();
-    if (mode === 'prev') newDate.subtract(1, 'month');
-    if (mode === 'next') newDate.add(1, 'month');
-    setSelectedDate(newDate.startOf('month'));
-    handlePanelChange(newDate);
+  const handleHeaderControl = (mode: 'prev' | 'next' | 'today') => {
+    let newDate = currentMonth.clone();
+    if (mode === 'prev') newDate.subtract(1, 'month').startOf('month');
+    if (mode === 'next') newDate.add(1, 'month').startOf('month');
+    if (mode === 'today') newDate = moment().startOf('day');
+    setSelectedDate(newDate);
+    handlePanelChange(mode === 'today' ? newDate : newDate.startOf('month'));
   };
 
   const handleSelect = (date: Moment) => {
@@ -79,6 +80,7 @@ export default function CalendarView({
         value={currentMonth}
         onPrev={() => handleHeaderControl('prev')}
         onNext={() => handleHeaderControl('next')}
+        onToday={() => handleHeaderControl('today')}
       />
       <Calendar
         value={selectedDate}
