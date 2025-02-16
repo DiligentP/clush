@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Layout, Button, Modal, Form, Input } from 'antd';
+import { Layout, Button } from 'antd';
 import useCalendar from './hooks/useCalendar';
 import MainHeader from './components/MainHeader';
 import CalendarView from './components/CalendarView';
 import './App.css';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
+import NewEventModal from './components/modals/NewEventModal';
+import NewTaskModal from './components/modals/NewTaskModal';
 
 const { Content, Footer } = Layout;
 
@@ -17,17 +19,15 @@ export default function App() {
     setCurrentDate 
   } = useCalendar();
   const [isMenuOpen, setIsMenuOpen] = useState(true); // 메뉴가 기본으로 열린 상태 유지
-  const [selectedDate, setSelectedDate] = useState<Moment | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [eventTitle, setEventTitle] = useState('');
+  const [eventModalVisible, setEventModalVisible] = useState(false);
+  const [taskModalVisible, setTaskModalVisible] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleDateSelect = (date: Moment) => {
-    setSelectedDate(date);
-    setModalVisible(true);
+    setEventModalVisible(true);
   };
 
   return (
@@ -37,10 +37,17 @@ export default function App() {
         <div className="menu-content">
           <Button 
             type="primary" 
-            onClick={() => setModalVisible(true)}
+            onClick={() => setEventModalVisible(true)}
             style={{ marginTop: 16 }}
           >
             새 일정 추가
+          </Button>
+          <Button 
+            type="default" 
+            onClick={() => setTaskModalVisible(true)}
+            style={{ marginTop: 16, width: '100%' }}
+          >
+            새 할일 추가
           </Button>
         </div>
       </div>
@@ -59,44 +66,22 @@ export default function App() {
           onDateSelect={handleDateSelect}
         />
       </Content>
-      <Modal
-        title="일정 추가"
-        open={modalVisible}
-        onOk={() => {
-          setModalVisible(false);
-          setEventTitle('');
+      <NewEventModal
+        visible={eventModalVisible}
+        onCancel={() => setEventModalVisible(false)}
+        onSubmit={(title) => {
+          console.log('새 일정 추가:', title);
+          setEventModalVisible(false);
         }}
-        onCancel={() => {
-          setModalVisible(false);
-          setEventTitle('');
+      />
+      <NewTaskModal
+        visible={taskModalVisible}
+        onCancel={() => setTaskModalVisible(false)}
+        onSubmit={(title) => {
+          console.log('새 할일 추가:', title);
+          setTaskModalVisible(false);
         }}
-        footer={[
-          <Button 
-            key="submit" 
-            type="primary" 
-            onClick={() => {
-              setModalVisible(false);
-              setEventTitle('');
-            }}
-          >
-            확인
-          </Button>
-        ]}
-      >
-        <Form layout="vertical">
-          <Form.Item
-            label="제목"
-            required
-            rules={[{ required: true, message: '제목을 입력해주세요' }]}
-          >
-            <Input 
-              placeholder="일정 제목을 입력하세요" 
-              value={eventTitle}
-              onChange={(e) => setEventTitle(e.target.value)}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      />
       <Footer className="app-footer">
         Clush Project ©{new Date().getFullYear()}
       </Footer>
