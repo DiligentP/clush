@@ -24,7 +24,7 @@
 1. **Docker 설치**
 2. **프로젝트 클론**
    ```bash
-   git clone https://github.com/DiligentP/clush.git
+   git clone https://github.com/DiligentP/clush-assignment.git
    cd clush
    ```
 3. **Docker Compose 실행**
