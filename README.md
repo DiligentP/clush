@@ -34,16 +34,16 @@
 ## 주요 접속 정보 (실행 방법 가이드)
 ### 옵션 1: 로컬 개발 환경 실행 (Docker-Compose 사용)
 1. **프로젝트 클론**
-   ```bash
-   git clone https://github.com/DiligentP/clush-assignment.git
-   cd clush-assignment
-   ```
+```bash
+git clone https://github.com/DiligentP/clush-assignment.git
+cd clush-assignment
+```
 2. **Docker Compose 실행**
-   ```bash
-   docker-compose up --build
-   또는
-   docker compose up --build
-   ```
+```bash
+docker-compose up --build
+또는
+docker compose up --build
+```
 
 | 서비스    | URL                          | 비고                          |
 |-----------|------------------------------|-------------------------------|
