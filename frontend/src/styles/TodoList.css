@@ -24,4 +24,23 @@
 .todo-list-item .ant-checkbox-wrapper {
   align-items: flex-start !important;
   padding: 4px 0 !important;
+}
+
+.todo-description {
+  display: none;
+  max-width: 100%;
+  padding: 4px 8px;
+  margin: 4px 0 0 28px; /* 체크박스와의 간격 조정 */
+  background: #f8f8f8;
+  border-radius: 4px;
+  border-left: 3px solid #e0e0e0;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.todo-list-item:hover .todo-description {
+  display: block;
 } 

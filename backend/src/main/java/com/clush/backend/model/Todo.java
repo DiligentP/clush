@@ -43,4 +43,8 @@ public class Todo {
         this.description = description;
         this.completed = completed;
     }
+
+    public void updateCompleted(boolean completed) {
+        this.completed = completed;
+    }
 } 

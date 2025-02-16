@@ -85,17 +85,35 @@ export default function App() {
                 currentFilter={filter}
                 onFilterChange={setFilter}
                 onToggle={(id) => {
-                  setTodos(todos.map(todo => 
-                    todo.id === id ? {...todo, completed: !todo.completed} : todo
-                  ));
+                  const targetTodo = todos.find(t => t.id === id);
+                  if (!targetTodo) return;
+                  
+                  TodoAPI.updateTodoStatus(id, !targetTodo.completed)
+                    .then(updatedTodo => {
+                      setTodos(todos.map(todo => 
+                        todo.id === id ? {...todo, completed: updatedTodo.completed} : todo
+                      ));
+                    })
+                    .catch(error => {
+                      message.error('상태 업데이트 실패');
+                      // 변경 사항 롤백
+                      setTodos(todos.map(todo => 
+                        todo.id === id ? {...todo, completed: !todo.completed} : todo
+                      ));
+                    });
                 }}
                 onDelete={(id) => {
                   setTodos(todos.filter(todo => todo.id !== id));
                 }}
-                onEdit={(id, newTitle) => {
-                  setTodos(todos.map(todo => 
-                    todo.id === id ? {...todo, title: newTitle} : todo
-                  ));
+                onEdit={(id, newTitle, newDescription) => {
+                  TodoAPI.updateTodo(id, newTitle, newDescription, todos.find(t => t.id === id)?.completed || false)
+                    .then(updatedTodo => {
+                      setTodos(todos.map(todo => 
+                        todo.id === id ? {...todo, title: newTitle, description: newDescription} : todo
+                      ));
+                      message.success('할일이 수정되었습니다');
+                    })
+                    .catch(error => message.error('할일 수정 실패'));
                 }}
               />
             </div>

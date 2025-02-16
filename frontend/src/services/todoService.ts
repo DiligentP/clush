@@ -12,7 +12,6 @@ export const TodoAPI = {
         throw new Error(`할일 조회 실패: ${errorText}`);
       }
       const data = await response.json();
-      console.log('API 응답 데이터:', data);
       return data;
     } catch (error) {
       console.error('할일 조회 중 오류 발생:', error);
@@ -37,12 +36,12 @@ export const TodoAPI = {
   },
 
   // 할일 수정
-  updateTodo: async (id: string, completed: boolean): Promise<Todo> => {
+  updateTodo: async (id: string, title: string, description: string, completed: boolean): Promise<Todo> => {
     try {
       const response = await fetch(`${API_BASE}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ completed })
+        body: JSON.stringify({ title, description, completed })
       });
       if (!response.ok) throw new Error('할일 수정 실패');
       return response.json();
@@ -61,6 +60,27 @@ export const TodoAPI = {
       if (!response.ok) throw new Error('할일 삭제 실패');
     } catch (error) {
       console.error('할일 삭제 중 오류 발생:', error);
+      throw error;
+    }
+  },
+
+  // 할일 완료 상태 업데이트
+  updateTodoStatus: async (id: string, completed: boolean): Promise<Todo> => {
+    try {
+      const response = await fetch(`${API_BASE}/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed })
+      });
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error('권한이 없습니다. 로그인 상태를 확인해주세요');
+        }
+        throw new Error('상태 업데이트 실패');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('상태 업데이트 오류:', error);
       throw error;
     }
   }
