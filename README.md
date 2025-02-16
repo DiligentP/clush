@@ -41,6 +41,8 @@
 2. **Docker Compose 실행**
    ```bash
    docker-compose up --build
+   또는
+   docker compose up --build
    ```
 
 | 서비스    | URL                          | 비고                          |

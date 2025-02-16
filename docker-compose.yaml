@@ -3,12 +3,14 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: clush
+      MYSQL_PASSWORD: clush
       MYSQL_DATABASE: clush_db
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d  # 초기화 스크립트
+      - ./db/init:/docker-entrypoint-initdb.d
     networks:
       - clush-network
 
@@ -17,11 +19,17 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/clush_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_USERNAME: clush
+      SPRING_DATASOURCE_PASSWORD: clush
     networks:
       - clush-network
 
@@ -29,14 +37,20 @@ services:
     build: ./frontend
     ports:
       - "3000:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - CHOKIDAR_USEPOLLING=true  # 파일 변경 감지 활성화
-      - WATCHPACK_POLLING=true     # 폴링 방식 설정
-    depends_on:
-      - backend
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     networks:
       - clush-network
 
