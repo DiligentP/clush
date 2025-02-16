@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layout, Button, Modal } from 'antd';
+import { Layout, Button, Modal, Form, Input } from 'antd';
 import useCalendar from './hooks/useCalendar';
 import MainHeader from './components/MainHeader';
 import CalendarView from './components/CalendarView';
@@ -19,6 +19,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(true); // 메뉴가 기본으로 열린 상태 유지
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [eventTitle, setEventTitle] = useState('');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -61,15 +62,40 @@ export default function App() {
       <Modal
         title="일정 추가"
         open={modalVisible}
-        onOk={() => setModalVisible(false)}
-        onCancel={() => setModalVisible(false)}
+        onOk={() => {
+          setModalVisible(false);
+          setEventTitle('');
+        }}
+        onCancel={() => {
+          setModalVisible(false);
+          setEventTitle('');
+        }}
         footer={[
-          <Button key="submit" type="primary" onClick={() => setModalVisible(false)}>
+          <Button 
+            key="submit" 
+            type="primary" 
+            onClick={() => {
+              setModalVisible(false);
+              setEventTitle('');
+            }}
+          >
             확인
           </Button>
         ]}
       >
-        <p>여기에 일정 입력 폼을 추가하세요</p>
+        <Form layout="vertical">
+          <Form.Item
+            label="제목"
+            required
+            rules={[{ required: true, message: '제목을 입력해주세요' }]}
+          >
+            <Input 
+              placeholder="일정 제목을 입력하세요" 
+              value={eventTitle}
+              onChange={(e) => setEventTitle(e.target.value)}
+            />
+          </Form.Item>
+        </Form>
       </Modal>
       <Footer className="app-footer">
         Clush Project ©{new Date().getFullYear()}
