@@ -12,7 +12,8 @@ export default function CalendarView({
   currentMonth,
   onPanelChange,
   selectedDate,
-  onDateSelect
+  onDateSelect,
+  onEventSelect
 }: CalendarViewProps) {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedDateState, setSelectedDateState] = useState<Moment>(moment());
@@ -68,6 +69,10 @@ export default function CalendarView({
             key={event.id}
             className="calendar-event-badge"
             title={`${event.title}\n${event.description || ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEventSelect(event);
+            }}
           >
             {event.title}
           </div>

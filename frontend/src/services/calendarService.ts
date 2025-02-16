@@ -35,5 +35,29 @@ export const CalendarAPI = {
     });
     if (!response.ok) throw new Error('일정 생성 실패');
     return response.json();
+  },
+
+  // 일정 수정
+  updateEvent: async (
+    id: number,
+    title: string,
+    description: string,
+    startDate: Moment,
+    endDate: Moment,
+    allDay: boolean
+  ): Promise<CalendarEvent> => {
+    const response = await fetch(`${API_BASE}/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title,
+        description,
+        startDate: startDate.format('YYYY-MM-DD'),
+        endDate: endDate.format('YYYY-MM-DD'),
+        allDay
+      })
+    });
+    if (!response.ok) throw new Error('일정 수정 실패');
+    return response.json();
   }
 }; 

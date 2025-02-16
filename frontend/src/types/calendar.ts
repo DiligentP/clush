@@ -12,6 +12,7 @@ export interface CalendarEvent {
 export interface CalendarEventModalProps {
   visible: boolean;
   selectedDate: Moment;
+  selectedEvent?: CalendarEvent;
   onCancel: () => void;
   onSubmit: (
     title: string, 
@@ -28,4 +29,5 @@ export interface CalendarViewProps {
   onPanelChange: (date: Moment) => void;
   selectedDate: Moment;
   onDateSelect: (date: Moment) => void;
+  onEventSelect: (event: CalendarEvent) => void;
 } 

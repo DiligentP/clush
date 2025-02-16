@@ -13,6 +13,7 @@ import CalendarEventModal from './components/modals/CalendarEventModal';
 // Services & Styles
 import {CalendarAPI} from './services/calendarService';
 import './App.css';
+import { CalendarEvent } from './types/calendar';
 
 const { Content, Footer } = Layout;
 
@@ -32,6 +33,7 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | 'completed' | 'active'>('all');
   const [currentMonth, setCurrentMonth] = useState<moment.Moment>(moment());
   const [selectedDate, setSelectedDate] = useState<moment.Moment>(moment());
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | undefined>(undefined);
 
   useEffect(() => {
     const saved = localStorage.getItem('todos');
@@ -41,6 +43,12 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    if (selectedEvent) {
+      setEventModalVisible(true);
+    }
+  }, [selectedEvent]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -93,19 +101,32 @@ export default function App() {
             selectedDate={selectedDate}
             onPanelChange={(date: moment.Moment) => setCurrentMonth(date)}
             onDateSelect={setSelectedDate}
+            onEventSelect={(event) => setSelectedEvent(event)}
           />
         </Content>
         <CalendarEventModal
-          visible={eventModalVisible}
+          visible={eventModalVisible || !!selectedEvent}
           selectedDate={selectedDate}
-          onCancel={() => setEventModalVisible(false)}
+          selectedEvent={selectedEvent}
+          onCancel={() => {
+            setEventModalVisible(false);
+            setSelectedEvent(undefined);
+          }}
           onSubmit={(title, description, isAllDay, start, end) => {
-            CalendarAPI.createEvent(title, description, start, end, isAllDay)
-              .then(() => {
-                setEventModalVisible(false);
-                setCurrentMonth(currentMonth.clone());
-              })
-              .catch(error => console.error('Error:', error));
+            if(selectedEvent) {
+              CalendarAPI.updateEvent(selectedEvent.id, title, description, start, end, isAllDay)
+                .then(() => {
+                  setEventModalVisible(false);
+                  setCurrentMonth(currentMonth.clone());
+                  setSelectedEvent(undefined);
+                })
+            } else {
+              CalendarAPI.createEvent(title, description, start, end, isAllDay)
+                .then(() => {
+                  setEventModalVisible(false);
+                  setCurrentMonth(currentMonth.clone());
+                })
+            }
           }}
         />
         <NewTaskModal

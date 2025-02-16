@@ -6,24 +6,39 @@ import { CalendarEventModalProps } from '../../types/calendar';
 export default function CalendarEventModal({
   visible, 
   selectedDate, 
+  selectedEvent,
   onCancel, 
   onSubmit,
   initialTitle = ''
 }: CalendarEventModalProps) {
   const [form] = Form.useForm();
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (visible) {
-      setMounted(true);
       form.resetFields();
-      form.setFieldsValue({ 
-        title: initialTitle,
-        dates: [selectedDate, selectedDate]
-      });
+      if (selectedEvent) {
+        form.setFieldsValue({
+          title: selectedEvent.title,
+          description: selectedEvent.description,
+          dates: [
+            moment(selectedEvent.startDate),
+            moment(selectedEvent.endDate)
+          ],
+          isAllDay: selectedEvent.allDay
+        });
+        
+        // 종일 일정인 경우 시간 선택기 비활성화
+        if (selectedEvent.allDay) {
+          form.setFieldsValue({
+            dates: [
+              moment(selectedEvent.startDate).startOf('day'),
+              moment(selectedEvent.endDate).endOf('day')
+            ]
+          });
+        }
+      }
     }
-    return () => setMounted(false);
-  }, [visible, initialTitle]);
+  }, [visible, selectedEvent]);
 
   const handleSubmit = () => {
     form
@@ -47,8 +62,10 @@ export default function CalendarEventModal({
 
   return (
     <Modal
-      title="새 일정 추가"
+      title={selectedEvent ? "일정 수정" : "새 일정 추가"}
       open={visible}
+      forceRender
+      destroyOnClose={false}
       onCancel={() => {
         form.resetFields();
         onCancel();
@@ -69,84 +86,80 @@ export default function CalendarEventModal({
           확인
         </Button>
       ]}
-      destroyOnClose
     >
-      {mounted && (
-        <Form 
-          form={form} 
-          layout="vertical" 
-          initialValues={{ title: initialTitle }}
-          preserve={false}
+      <Form 
+        form={form} 
+        layout="vertical" 
+        preserve
+      >
+        <Form.Item
+          name="title"
+          label="제목"
+          rules={[{ required: true, message: '제목을 입력해주세요' }]}
         >
-          <Form.Item
-            name="title"
-            label="제목"
-            rules={[{ required: true, message: '제목을 입력해주세요' }]}
-          >
-            <Input placeholder="일정 제목을 입력하세요" />
-          </Form.Item>
+          <Input placeholder="일정 제목을 입력하세요" />
+        </Form.Item>
 
-          <Form.Item
-            name="dates"
-            label="기간"
-            rules={[
-              { required: true, message: '기간을 선택해주세요' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  const isAllDay = getFieldValue('isAllDay');
-                  if (!value) return Promise.resolve();
-                  
-                  if (isAllDay && !value[0].isSame(value[1], 'day')) {
-                    return Promise.reject('하루 종일 일정은 동일한 날짜를 선택해야 합니다');
-                  }
-                  if (!isAllDay && !value[0].isBefore(value[1])) {
-                    return Promise.reject('종료일은 시작일 이후여야 합니다');
-                  }
-                  return Promise.resolve();
-                },
-              }),
-            ]}
-          >
-            <DatePicker.RangePicker
-              showTime={false}
-              format="YYYY-MM-DD"
-              disabledDate={(current) => current && current < moment().startOf('day')}
-              style={{ width: '100%' }}
-              disabled={form.getFieldValue('isAllDay')}
-            />
-          </Form.Item>
+        <Form.Item
+          name="dates"
+          label="기간"
+          rules={[
+            { required: true, message: '기간을 선택해주세요' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                const isAllDay = getFieldValue('isAllDay');
+                if (!value) return Promise.resolve();
+                
+                if (isAllDay && !value[0].isSame(value[1], 'day')) {
+                  return Promise.reject('하루 종일 일정은 동일한 날짜를 선택해야 합니다');
+                }
+                if (!isAllDay && !value[0].isBefore(value[1])) {
+                  return Promise.reject('종료일은 시작일 이후여야 합니다');
+                }
+                return Promise.resolve();
+              },
+            }),
+          ]}
+        >
+          <DatePicker.RangePicker
+            showTime={false}
+            format="YYYY-MM-DD"
+            disabledDate={(current) => current && current < moment().startOf('day')}
+            style={{ width: '100%' }}
+            disabled={!!selectedEvent?.allDay}
+          />
+        </Form.Item>
 
-          <Form.Item
-            name="isAllDay"
-            valuePropName="checked"
-            initialValue={false}
+        <Form.Item
+          name="isAllDay"
+          valuePropName="checked"
+          initialValue={false}
+        >
+          <Checkbox 
+            onChange={(e) => {
+              const baseDate = form.getFieldValue('dates')?.[0] || selectedDate;
+              form.setFieldsValue({ 
+                dates: e.target.checked 
+                  ? [baseDate.startOf('day'), baseDate.startOf('day')] 
+                  : [baseDate, baseDate.add(1, 'hour')]
+              });
+            }}
           >
-            <Checkbox 
-              onChange={(e) => {
-                const baseDate = form.getFieldValue('dates')?.[0] || selectedDate;
-                form.setFieldsValue({ 
-                  dates: e.target.checked 
-                    ? [baseDate.startOf('day'), baseDate.startOf('day')] 
-                    : [baseDate, baseDate.add(1, 'hour')]
-                });
-              }}
-            >
-              종일 일정으로 설정
-            </Checkbox>
-          </Form.Item>
+            종일 일정으로 설정
+          </Checkbox>
+        </Form.Item>
 
-          <Form.Item
-            name="description"
-            label="설명"
-            rules={[{ max: 200, message: '200자 이내로 입력해주세요' }]}
-          >
-            <Input.TextArea 
-              rows={3} 
-              placeholder="일정에 대한 상세 설명을 입력하세요" 
-            />
-          </Form.Item>
-        </Form>
-      )}
+        <Form.Item
+          name="description"
+          label="설명"
+          rules={[{ max: 200, message: '200자 이내로 입력해주세요' }]}
+        >
+          <Input.TextArea 
+            rows={3} 
+            placeholder="일정에 대한 상세 설명을 입력하세요" 
+          />
+        </Form.Item>
+      </Form>
     </Modal>
   );
 } 
