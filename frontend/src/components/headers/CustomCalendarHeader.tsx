@@ -1,7 +1,7 @@
 import { Button, Typography } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import type { Moment } from 'moment';
-import '../App.css';
+import '../../App.css';
 
 interface CustomCalendarHeaderProps {
   value: Moment;

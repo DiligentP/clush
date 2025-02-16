@@ -1,7 +1,7 @@
 import { Calendar, Badge } from 'antd';
 import type { Moment } from 'moment';
 import { useEffect, useState } from 'react';
-import CustomCalendarHeader from './CustomCalendarHeader';
+import CustomCalendarHeader from './headers/CustomCalendarHeader.tsx';
 import moment from 'moment';
 
 interface CalendarViewProps {
