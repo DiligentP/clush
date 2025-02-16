@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -119,5 +120,44 @@ class CalendarServiceTest {
         calendarService.deleteEvent(testId);
         
         verify(calendarEventRepository).deleteById(testId);
+    }
+
+    @Test
+    @DisplayName("일정 수정 - 정상 케이스")
+    void updateEvent_Success() {
+        CalendarEventRequest updateRequest = new CalendarEventRequest(
+            "업데이트된 제목",
+            "업데이트된 설명",
+            LocalDate.of(2024, 3, 2),
+            LocalDate.of(2024, 3, 3),
+            true
+        );
+        
+        when(calendarEventRepository.findById(1L)).thenReturn(Optional.of(testEvent));
+        when(calendarEventMapper.toResponse(any())).thenReturn(testResponse);
+        
+        CalendarEventResponse result = calendarService.updateEvent(1L, updateRequest);
+        
+        assertNotNull(result);
+        verify(calendarEventRepository).save(testEvent);
+        assertEquals("테스트 제목", result.getTitle()); // 매퍼가 정상 동작하는지 확인
+    }
+
+    @Test
+    @DisplayName("일정 수정 - 존재하지 않는 ID")
+    void updateEvent_InvalidId() {
+        CalendarEventRequest updateRequest = new CalendarEventRequest(
+            "업데이트된 제목",
+            "업데이트된 설명",
+            LocalDate.of(2024, 3, 2),
+            LocalDate.of(2024, 3, 3),
+            true
+        );
+        
+        when(calendarEventRepository.findById(999L)).thenReturn(Optional.empty());
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            calendarService.updateEvent(999L, updateRequest);
+        });
     }
 } 

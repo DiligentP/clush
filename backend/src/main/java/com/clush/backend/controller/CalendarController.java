@@ -39,4 +39,15 @@ public class CalendarController {
         log.info("일정 생성 요청 - 제목: {}", request.getTitle());
         return ResponseEntity.ok(calendarService.createEvent(request));
     }
+
+    // 일정 수정
+    @Operation(summary = "일정 수정", description = "기존 일정을 업데이트합니다")
+    @PutMapping("/{id}")
+    public ResponseEntity<CalendarEventResponse> updateEvent(
+        @PathVariable Long id,
+        @RequestBody CalendarEventRequest request
+    ) {
+        log.info("일정 수정 요청 - ID: {}", id);
+        return ResponseEntity.ok(calendarService.updateEvent(id, request));
+    }
 } 

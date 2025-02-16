@@ -38,8 +38,19 @@ public class CalendarService {
 
     @Transactional
     public CalendarEventResponse updateEvent(Long id, CalendarEventRequest request) {
-            return null;
-        // 구현 예정
+        CalendarEvent existingEvent = calendarEventRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일정 ID: " + id));
+        
+        existingEvent.updateDetails(
+            request.getTitle(),
+            request.getDescription(),
+            request.getStartDate(),
+            request.getEndDate(),
+            request.isAllDay()
+        );
+        
+        CalendarEvent updatedEvent = calendarEventRepository.save(existingEvent);
+        return calendarEventMapper.toResponse(updatedEvent);
     }
 
     @Transactional
