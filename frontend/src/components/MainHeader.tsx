@@ -11,7 +11,7 @@ export default function MainHeader({ toggleMenu }: { toggleMenu: () => void }) {
       <div className="header-content">
         <Button className="menu-button" icon={<MenuOutlined />} onClick={toggleMenu} />
         <Title level={3} className="header-title">
-          Clush Calendar
+          Clush Task Manager
         </Title>
       </div>
     </Header>
