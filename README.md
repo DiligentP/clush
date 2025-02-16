@@ -30,19 +30,30 @@
 
 **개발환경**: Docker Compose
 
-## 실행 방법
-1. **Docker 설치**
-2. **프로젝트 클론**
+
+## 주요 접속 정보 (실행 방법 가이드)
+### 옵션 1: 로컬 개발 환경 실행 (Docker-Compose 사용)
+1. **프로젝트 클론**
    ```bash
    git clone https://github.com/DiligentP/clush-assignment.git
    cd clush-assignment
    ```
-3. **Docker Compose 실행**
+2. **Docker Compose 실행**
    ```bash
    docker-compose up --build
    ```
-4. **프론트엔드 접근**: `http://localhost:3000`
-5. **백엔드 접근**: `http://localhost:8080`
+
+| 서비스    | URL                          | 비고                          |
+|-----------|------------------------------|-------------------------------|
+| 프론트엔드 | http://localhost:3000       | Ant Design 기반 UI           |
+| 백엔드    | http://localhost:8080       | Swagger 문서 리다이렉트            |
+| MySQL     | jdbc:mysql://localhost:3306 | 사용자: clush, 비밀번호: clush |
+
+### 옵션 2: 배포 서버 바로 사용
+| 서비스    | URL                                | 주요 기능                     |
+|-----------|------------------------------------|-----------------------------|
+| 프론트엔드 | https://clush.diligentp.com       | 할일 관리 + 캘린더 조회      |
+| 백엔드 API | https://clush-be.diligentp.com    | Swagger 문서 리다이렉트 |
 
 ## 디렉토리 구조
 ```bash
