@@ -43,24 +43,24 @@ class CalendarServiceTest {
         testRequest = new CalendarEventRequest(
             "테스트 제목",
             "테스트 설명",
-            LocalDate.of(2024, 3, 1),
-            LocalDate.of(2024, 3, 2),
+            LocalDate.of(2025, 1, 1),
+            LocalDate.of(2025, 1, 2),
             false
         );
 
         testEvent = CalendarEvent.builder()
             .id(1L)
             .title("테스트 제목")
-            .startDate(LocalDate.of(2024, 3, 1))
-            .endDate(LocalDate.of(2024, 3, 2))
+            .startDate(LocalDate.of(2025, 1, 1))
+            .endDate(LocalDate.of(2025, 1, 2))
             .build();
 
         testResponse = new CalendarEventResponse(
             1L,
             "테스트 제목",
             "테스트 설명",
-            LocalDate.of(2024, 3, 1),
-            LocalDate.of(2024, 3, 2),
+            LocalDate.of(2025, 1, 1),
+            LocalDate.of(2025, 1, 2),
             false,
             null,
             null
@@ -84,13 +84,13 @@ class CalendarServiceTest {
     @Test
     @DisplayName("월별 일정 조회 - 해당 월에 일정이 없는 경우")
     void getEventsByMonth_NoEvents() {
-        LocalDate start = LocalDate.of(2024, 3, 1);
-        LocalDate end = LocalDate.of(2024, 3, 31);
+        LocalDate start = LocalDate.of(2025, 1, 1);
+        LocalDate end = LocalDate.of(2025, 1, 31);
         
         when(calendarEventRepository.findByStartDateBetween(start, end))
             .thenReturn(List.of());
 
-        List<CalendarEventResponse> result = calendarService.getEventsByMonth(2024, 3);
+        List<CalendarEventResponse> result = calendarService.getEventsByMonth(2025, 1);
 
         assertTrue(result.isEmpty());
     }
@@ -98,14 +98,14 @@ class CalendarServiceTest {
     @Test
     @DisplayName("월별 일정 조회 - 해당 월에 일정이 있는 경우")
     void getEventsByMonth_WithEvents() {
-        LocalDate start = LocalDate.of(2024, 3, 1);
-        LocalDate end = LocalDate.of(2024, 3, 31);
+        LocalDate start = LocalDate.of(2025, 1, 1);
+        LocalDate end = LocalDate.of(2025, 1, 31);
         
         when(calendarEventRepository.findByStartDateBetween(start, end))
             .thenReturn(List.of(testEvent));
         when(calendarEventMapper.toResponse(any())).thenReturn(testResponse);
 
-        List<CalendarEventResponse> result = calendarService.getEventsByMonth(2024, 3);
+        List<CalendarEventResponse> result = calendarService.getEventsByMonth(2025, 1);
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
@@ -128,8 +128,8 @@ class CalendarServiceTest {
         CalendarEventRequest updateRequest = new CalendarEventRequest(
             "업데이트된 제목",
             "업데이트된 설명",
-            LocalDate.of(2024, 3, 2),
-            LocalDate.of(2024, 3, 3),
+            LocalDate.of(2025, 1, 2),
+            LocalDate.of(2025, 1, 3),
             true
         );
         
@@ -149,8 +149,8 @@ class CalendarServiceTest {
         CalendarEventRequest updateRequest = new CalendarEventRequest(
             "업데이트된 제목",
             "업데이트된 설명",
-            LocalDate.of(2024, 3, 2),
-            LocalDate.of(2024, 3, 3),
+            LocalDate.of(2025, 1, 2),
+            LocalDate.of(2025, 1, 3),
             true
         );
         
