@@ -56,4 +56,15 @@ public class TodoService {
     public void deleteTodo(Long id) {
         todoRepository.deleteById(id);
     }
+
+    // 할일 완료 상태 업데이트
+    @Transactional
+    public TodoResponse updateTodoStatus(Long id, boolean completed) {
+        Todo existingTodo = todoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 할일 ID: " + id));
+        
+        existingTodo.updateCompleted(completed);
+        Todo updatedTodo = todoRepository.save(existingTodo);
+        return todoMapper.toResponse(updatedTodo);
+    }
 } 
