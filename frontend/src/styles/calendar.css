@@ -1,0 +1,26 @@
+/* 캘린더 이벤트 배지 스타일 */
+.calendar-event-badge {
+  display: block;
+  margin: 2px 0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f0f5ff;
+  border: 1px solid #91caff;
+  color: #2f54eb;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 이벤트 컨테이너 */
+.calendar-events-container {
+  min-height: 80px;
+  padding: 4px;
+}
+
+/* 날짜 셀 커스텀 스타일 */
+.ant-picker-cell-inner {
+  min-height: 120px !important;
+  align-items: flex-start !important;
+} 

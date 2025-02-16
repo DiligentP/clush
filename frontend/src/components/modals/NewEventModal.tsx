@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 interface NewEventModalProps {
   visible: boolean;
+  selectedDate: Moment;
   onCancel: () => void;
   onSubmit: (
     title: string, 
@@ -17,6 +18,7 @@ interface NewEventModalProps {
 
 export default function NewEventModal({ 
   visible, 
+  selectedDate, 
   onCancel, 
   onSubmit,
   initialTitle = ''
@@ -28,7 +30,10 @@ export default function NewEventModal({
     if (visible) {
       setMounted(true);
       form.resetFields();
-      form.setFieldsValue({ title: initialTitle });
+      form.setFieldsValue({ 
+        title: initialTitle,
+        dates: [selectedDate, selectedDate]
+      });
     }
     return () => setMounted(false);
   }, [visible, initialTitle]);
@@ -41,7 +46,6 @@ export default function NewEventModal({
         const end = values.isAllDay 
           ? start.clone().endOf('day')
           : values.dates[1].endOf('day');
-
         onSubmit(
           values.title,
           values.description || '',
@@ -132,9 +136,11 @@ export default function NewEventModal({
           >
             <Checkbox 
               onChange={(e) => {
-                const now = moment().startOf('day');
+                const baseDate = form.getFieldValue('dates')?.[0] || selectedDate;
                 form.setFieldsValue({ 
-                  dates: e.target.checked ? [now, now] : null
+                  dates: e.target.checked 
+                    ? [baseDate.startOf('day'), baseDate.startOf('day')] 
+                    : [baseDate, baseDate.add(1, 'hour')]
                 });
               }}
             >

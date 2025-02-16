@@ -1,4 +1,5 @@
-import { Calendar, Badge } from 'antd';
+import '../styles/calendar.css';
+import { Calendar } from 'antd';
 import type { Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import CustomCalendarHeader from './headers/CustomCalendarHeader.tsx';
@@ -8,14 +9,18 @@ import { CalendarAPI } from '../services/calendarService';
 interface CalendarViewProps {
   currentMonth: Moment;
   onPanelChange: (date: Moment) => void;
+  selectedDate: Moment;
+  onDateSelect: (date: Moment) => void;
 }
 
 export default function CalendarView({ 
   currentMonth,
-  onPanelChange
+  onPanelChange,
+  selectedDate,
+  onDateSelect
 }: CalendarViewProps) {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Moment>(moment());
+  const [selectedDateState, setSelectedDateState] = useState<Moment>(moment());
 
   // 월별 일정 조회 API 호출
   const fetchEvents = async () => {
@@ -26,7 +31,7 @@ export default function CalendarView({
       );
       setEvents(data);
     } catch (error) {
-      console.error('일정 조회 실패:', error);
+      console.error('일정 조회 실패:', error instanceof Error ? error.message : error);
     }
   };
 
@@ -47,12 +52,12 @@ export default function CalendarView({
     if (mode === 'prev') newDate.subtract(1, 'month').startOf('month');
     if (mode === 'next') newDate.add(1, 'month').startOf('month');
     if (mode === 'today') newDate = moment().startOf('day');
-    setSelectedDate(newDate);
+    onDateSelect(mode === 'today' ? newDate : newDate.startOf('month'));
     handlePanelChange(mode === 'today' ? newDate : newDate.startOf('month'));
   };
 
   const handleSelect = (date: Moment) => {
-    setSelectedDate(date);
+    onDateSelect(date);
   };
 
   // 날짜별 렌더링 처리
@@ -62,13 +67,15 @@ export default function CalendarView({
     );
 
     return (
-      <div className="events">
+      <div className="calendar-events-container">
         {dayEvents.map(event => (
-          <Badge
+          <div
             key={event.id}
-            text={event.title}
-            className="event-badge"
-          />
+            className="calendar-event-badge"
+            title={`${event.title}\n${event.description || ''}`}
+          >
+            {event.title}
+          </div>
         ))}
       </div>
     );
@@ -99,4 +106,5 @@ interface CalendarEvent {
   title: string;
   startDate: Moment;
   endDate: Moment;
+  description?: string;
 } 

@@ -20,7 +20,8 @@ export default function App() {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [filter, setFilter] = useState<'all' | 'completed' | 'active'>('all');
-  const [currentMonth, setCurrentMonth] = useState(moment());
+  const [currentMonth, setCurrentMonth] = useState<moment.Moment>(moment());
+  const [selectedDate, setSelectedDate] = useState<moment.Moment>(moment());
 
   useEffect(() => {
     const saved = localStorage.getItem('todos');
@@ -79,14 +80,14 @@ export default function App() {
         <Content className="content" style={{ padding: '20px 50px' }}>
           <CalendarView 
             currentMonth={currentMonth}
-            onPanelChange={(date) => {
-              setCurrentMonth(date);
-              console.log('월 변경:', date.format('YYYY-MM'));
-            }}
+            selectedDate={selectedDate}
+            onPanelChange={(date) => setCurrentMonth(date)}
+            onDateSelect={setSelectedDate}
           />
         </Content>
         <NewEventModal
           visible={eventModalVisible}
+          selectedDate={selectedDate}
           onCancel={() => setEventModalVisible(false)}
           onSubmit={(title, description, isAllDay, start, end) => {
             CalendarAPI.createEvent(title, description, start, end, isAllDay)
