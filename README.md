@@ -1,8 +1,18 @@
-# clush-project
+## Clush Task Manager
+![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/26673befe4159847118a3c338a57d1fb.png)
+**Clush Task Manager**는 할일 관리와 일정 관리를 통합한 생산성 관리 도구입니다.
 
-## 프로젝트 개요
+**주요기능**
+- 📝 **스마트 할일 관리**: 제목/설명 작성, 완료 상태 관리, 필터링 기능
+- 🗓️ **통합 캘린더**: 월별/주별/일별 일정 조회, 드래그 앤 드롭으로 일정 이동
+- 🔗 **일정 공유**: 공유 가능한 링크 생성을 통한 팀 일정 협업
 
-## 요구사항
+**핵심 기능**
+- 실시간 할일 상태 동기화
+- 반응형 캘린더 뷰 (Ant Design Calendar 기반)
+- RESTful API 기반 백엔드 (Spring Boot)
+- MySQL을 이용한 데이터 영속성 관리
+
 
 ## 기술 스택
 **백엔드**
