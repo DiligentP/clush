@@ -37,4 +37,10 @@ public class Todo {
     
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void updateDetails(String title, String description, boolean completed) {
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+    }
 } 
