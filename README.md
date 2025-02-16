@@ -35,7 +35,7 @@
 2. **프로젝트 클론**
    ```bash
    git clone https://github.com/DiligentP/clush-assignment.git
-   cd clush
+   cd clush-assignment
    ```
 3. **Docker Compose 실행**
    ```bash
