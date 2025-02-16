@@ -57,6 +57,11 @@ docker compose up --build
 | 프론트엔드 | https://clush.diligentp.com       | 할일 관리 + 캘린더 조회      |
 | 백엔드 API | https://clush-be.diligentp.com    | Swagger 문서 리다이렉트 |
 
+## API 명세서
+![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/4ce8bcc62e2a3537e4ba1293b93cb085.png)
+https://clush-be.diligentp.com
+
+
 ## 디렉토리 구조
 ```bash
 clush/
