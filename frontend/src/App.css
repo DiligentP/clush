@@ -236,7 +236,6 @@
 }
 
 .ant-picker {
-  border-radius: 8px !important;
   padding: 4px 8px !important;
   border: 1px solid #d9d9d9 !important;
   min-height: 36px !important;
@@ -408,4 +407,9 @@
 
 .ant-picker-calendar .ant-picker-content {
   height: 100%;
+}
+
+/* 날짜 선택기 스타일 */
+.ant-picker-range .ant-picker-input > input {
+  font-size: 14px !important;
 }

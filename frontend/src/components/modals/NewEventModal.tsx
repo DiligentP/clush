@@ -1,9 +1,10 @@
-import { Modal, Form, Input, Button } from 'antd';
+import { Modal, Form, Input, Button, DatePicker } from 'antd';
+import moment, { Moment } from 'moment';
 
 interface NewEventModalProps {
   visible: boolean;
   onCancel: () => void;
-  onSubmit: (title: string) => void;
+  onSubmit: (title: string, startDate: Moment, endDate: Moment) => void;
   initialTitle?: string;
 }
 
@@ -17,7 +18,11 @@ export default function NewEventModal({
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      onSubmit(values.title);
+      onSubmit(
+        values.title,
+        values.dates[0].startOf('day'),
+        values.dates[1].endOf('day')
+      );
       form.resetFields();
     });
   };
@@ -43,6 +48,29 @@ export default function NewEventModal({
           rules={[{ required: true, message: '제목을 입력해주세요' }]}
         >
           <Input placeholder="일정 제목을 입력하세요" />
+        </Form.Item>
+
+        <Form.Item
+          name="dates"
+          label="기간"
+          rules={[
+            { required: true, message: '기간을 선택해주세요' },
+            () => ({
+              validator(_, value) {
+                if (!value || value[0].isBefore(value[1])) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('종료일은 시작일 이후여야 합니다'));
+              },
+            }),
+          ]}
+        >
+          <DatePicker.RangePicker
+            showTime={false}
+            format="YYYY-MM-DD"
+            disabledDate={(current) => current && current < moment().startOf('day')}
+            style={{ width: '100%' }}
+          />
         </Form.Item>
       </Form>
     </Modal>
