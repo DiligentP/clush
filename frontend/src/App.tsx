@@ -103,7 +103,15 @@ export default function App() {
                     });
                 }}
                 onDelete={(id) => {
-                  setTodos(todos.filter(todo => todo.id !== id));
+                  TodoAPI.deleteTodo(id)
+                    .then(() => {
+                      setTodos(todos.filter(todo => todo.id !== id));
+                      message.success('할일이 삭제되었습니다');
+                    })
+                    .catch(error => {
+                      console.error('삭제 실패:', error);
+                      message.error('할일 삭제 실패');
+                    });
                 }}
                 onEdit={(id, newTitle, newDescription) => {
                   TodoAPI.updateTodo(id, newTitle, newDescription, todos.find(t => t.id === id)?.completed || false)
