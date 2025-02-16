@@ -202,3 +202,14 @@
     margin-left: 200px;
   }
 }
+
+.menu-content button {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.menu-content h3 {
+  color: #1890ff;
+  border-bottom: 1px solid #e8e8e8;
+  padding-bottom: 8px;
+}

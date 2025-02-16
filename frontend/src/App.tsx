@@ -34,12 +34,13 @@ export default function App() {
       <MainHeader toggleMenu={toggleMenu} />
       <div className={`drawer ${isMenuOpen ? 'open' : ''}`}>
         <div className="menu-content">
-          <h3>메뉴</h3>
-          <ul>
-            <li>캘린더 설정</li>
-            <li>카테고리 관리</li>
-            <li>알림 설정</li>
-          </ul>
+          <Button 
+            type="primary" 
+            onClick={() => setModalVisible(true)}
+            style={{ marginTop: 16 }}
+          >
+            새 일정 추가
+          </Button>
         </div>
       </div>
       <Content className="content" style={{ padding: '20px 50px' }}>
@@ -58,7 +59,7 @@ export default function App() {
         />
       </Content>
       <Modal
-        title={`일정 추가 - ${selectedDate?.format('YYYY년 MM월 DD일')}`}
+        title={`일정 추가 - ${selectedDate?.format('YYYY년 MM월 DD일') || moment().format('YYYY년 MM월 DD일')}`}
         open={modalVisible}
         onOk={() => setModalVisible(false)}
         onCancel={() => setModalVisible(false)}
