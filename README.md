@@ -1,5 +1,5 @@
 ## Clush Task Manager
-![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/fe2af3c2f94fdb0d269c60cda0eef1af.png)
+![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/f3c4d56f137fd2c024e5b40dedb6659c.png)
 **Clush Task Manager**는 할일 관리와 일정 관리를 통합한 생산성 관리 도구입니다.
 
 **주요기능**
