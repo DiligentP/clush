@@ -2,6 +2,7 @@ import { Calendar, Badge } from 'antd';
 import type { Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import CustomCalendarHeader from './CustomCalendarHeader';
+import moment from 'moment';
 
 interface CalendarViewProps {
   currentMonth: Moment;
@@ -13,6 +14,7 @@ export default function CalendarView({
   onPanelChange
 }: CalendarViewProps) {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Moment>(moment());
 
   // 월별 일정 조회 API 호출
   const fetchEvents = async () => {
@@ -43,7 +45,12 @@ export default function CalendarView({
     const newDate = currentMonth.clone();
     if (mode === 'prev') newDate.subtract(1, 'month');
     if (mode === 'next') newDate.add(1, 'month');
+    setSelectedDate(newDate.startOf('month'));
     handlePanelChange(newDate);
+  };
+
+  const handleSelect = (date: Moment) => {
+    setSelectedDate(date);
   };
 
   // 날짜별 렌더링 처리
@@ -74,6 +81,8 @@ export default function CalendarView({
         onNext={() => handleHeaderControl('next')}
       />
       <Calendar
+        value={selectedDate}
+        onSelect={handleSelect}
         dateCellRender={dateCellRender}
         onPanelChange={handlePanelChange}
         className="ant-picker-calendar"
