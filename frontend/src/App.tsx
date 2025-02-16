@@ -93,7 +93,7 @@ export default function App() {
             CalendarAPI.createEvent(title, description, start, end, isAllDay)
               .then(() => {
                 setEventModalVisible(false);
-                setCurrentMonth(moment());
+                setCurrentMonth(currentMonth.clone());
               })
               .catch(error => console.error('Error:', error));
           }}
