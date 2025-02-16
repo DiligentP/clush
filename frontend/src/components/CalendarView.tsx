@@ -65,7 +65,6 @@ export default function CalendarView({
         {dayEvents.map(event => (
           <Badge
             key={event.id}
-            color={event.color}
             text={event.title}
             className="event-badge"
           />
@@ -99,5 +98,4 @@ interface CalendarEvent {
   title: string;
   startDate: Moment;
   endDate: Moment;
-  color: string;
 } 

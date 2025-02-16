@@ -12,7 +12,6 @@ public record CalendarEventResponse(
     String description,
     LocalDate startDate,
     LocalDate endDate,
-    String color,
     boolean allDay,
     LocalDateTime createdAt,
     LocalDateTime modifiedAt

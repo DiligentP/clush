@@ -11,6 +11,5 @@ public record CalendarEventRequest(
     String description,
     @NotNull LocalDate startDate,
     @NotNull LocalDate endDate,
-    String color,
     boolean allDay
 ) {} 

@@ -34,7 +34,6 @@ public class CalendarEvent {
     @Column(nullable = false)
     private LocalDate endDate;
     
-    private String color;
     private boolean allDay;
 
     @CreatedDate
@@ -48,12 +47,11 @@ public class CalendarEvent {
     private LocalDateTime deletedAt;
 
     public void updateDetails(String title, String description, LocalDate startDate, 
-                             LocalDate endDate, String color, boolean allDay) {
+                             LocalDate endDate, boolean allDay) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.color = color;
         this.allDay = allDay;
     }
 
