@@ -8,21 +8,14 @@
 - ❌ **일정 공유**: 공유 가능한 링크 생성을 통한 팀 일정 협업
 
 
-## 기술 스택
-**백엔드**
-- Spring Boot 3.3.8, Java 17
-- DB: H2 (테스트), MySQL (개발)
-- MapStruct: DTO 변환
-- Lombok: 보일러플레이트 코드 감소
+**기술 스택**
 
-**프론트엔드**
-- React 18, TypeScript, Vite
-- Moment.js: 날짜 관리
-- Ant Design v4: UI 컴포넌트
-
-**데이터베이스**: MySQL 8.0
-
-**개발환경**: Docker Compose
+| **구분**          | **기술**                                                                                            |
+|--------------------|----------------------------------------------------------------------------------------------------|
+| **백엔드**        | - Spring Boot 3.3.8 <br> - Java 17 <br> - MapStruct (DTO 변환) <br> - Lombok (보일러플레이트 감소)   |
+| **데이터베이스**   | - MySQL 8.0 (개발)<br> - H2 (테스트)                                                               |
+| **프론트엔드**     | - React 18 <br> - TypeScript <br> - Vite <br> - Moment.js (날짜 관리) <br> - Ant Design v4 (UI)    |
+| **개발 환경**     | - Docker Compose                                                                                   |
 
 
 ## 주요 접속 정보 (실행 방법 가이드)
@@ -55,6 +48,7 @@ docker compose up --build
 ![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/281009a38e03c716ac5e03c8cda2aba6.png)
 https://clush-be.diligentp.com
 
+## 테스트 케이스
 
 ## 디렉토리 구조
 ```bash
