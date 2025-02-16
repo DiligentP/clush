@@ -1,9 +1,15 @@
 import { Modal, Form, Input, Button } from 'antd';
 
+interface TodoItem {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
 interface NewTaskModalProps {
   visible: boolean;
   onCancel: () => void;
-  onSubmit: (title: string) => void;
+  onSubmit: (todo: TodoItem) => void;
 }
 
 export default function NewTaskModal({ 
@@ -15,7 +21,11 @@ export default function NewTaskModal({
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      onSubmit(values.title);
+      onSubmit({
+        id: Date.now().toString(),
+        title: values.title,
+        completed: false
+      });
       form.resetFields();
     });
   };

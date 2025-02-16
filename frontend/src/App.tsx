@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Layout, Button } from 'antd';
 import useCalendar from './hooks/useCalendar';
 import MainHeader from './components/MainHeader';
@@ -7,6 +7,7 @@ import './App.css';
 import moment, { Moment } from 'moment';
 import NewEventModal from './components/modals/NewEventModal';
 import NewTaskModal from './components/modals/NewTaskModal';
+import TodoList from './components/TodoList';
 
 const { Content, Footer } = Layout;
 
@@ -21,6 +22,16 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(true); // 메뉴가 기본으로 열린 상태 유지
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [taskModalVisible, setTaskModalVisible] = useState(false);
+  const [todos, setTodos] = useState<TodoItem[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('todos');
+    if (saved) setTodos(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -49,6 +60,19 @@ export default function App() {
           >
             새 할일 추가
           </Button>
+          <div style={{ marginTop: 24 }}>
+            <TodoList
+              todos={todos}
+              onToggle={(id) => {
+                setTodos(todos.map(todo => 
+                  todo.id === id ? {...todo, completed: !todo.completed} : todo
+                ));
+              }}
+              onDelete={(id) => {
+                setTodos(todos.filter(todo => todo.id !== id));
+              }}
+            />
+          </div>
         </div>
       </div>
       <Content className="content" style={{ padding: '20px 50px' }}>
