@@ -18,23 +18,24 @@ export default function CustomCalendarHeader({
     <div className="compact-calendar-header">
       <Button 
         size="small"
-        shape="circle" 
-        icon={<LeftOutlined />} 
+        icon={<LeftOutlined />}
         onClick={onPrev}
-        className="compact-nav-button"
+        className="square-nav-button"
+        style={{ borderRadius: '4px' }}
       />
       <Typography.Title 
         level={5}
         className="compact-month-title"
+        style={{ margin: '0 12px' }}
       >
         {value.format('YYYY년 MM월')}
       </Typography.Title>
       <Button 
         size="small"
-        shape="circle" 
-        icon={<RightOutlined />} 
+        icon={<RightOutlined />}
         onClick={onNext}
-        className="compact-nav-button"
+        className="square-nav-button"
+        style={{ borderRadius: '4px' }}
       />
     </div>
   );

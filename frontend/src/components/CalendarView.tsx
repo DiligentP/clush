@@ -68,17 +68,16 @@ export default function CalendarView({
 
   return (
     <div className="site-layout-content">
+      <CustomCalendarHeader
+        value={currentMonth}
+        onPrev={() => handleHeaderControl('prev')}
+        onNext={() => handleHeaderControl('next')}
+      />
       <Calendar
         dateCellRender={dateCellRender}
         onPanelChange={handlePanelChange}
         className="ant-picker-calendar"
-        headerRender={() => (
-          <CustomCalendarHeader
-            value={currentMonth}
-            onPrev={() => handleHeaderControl('prev')}
-            onNext={() => handleHeaderControl('next')}
-          />
-        )}
+        headerRender={() => null}
       />
     </div>
   );

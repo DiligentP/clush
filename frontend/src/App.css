@@ -330,20 +330,30 @@
   border-radius: 4px;
 }
 
-/* 기존 .calendar-header 대신 추가 */
+/* 헤더 컨테이너 스타일 조정 */
 .compact-calendar-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 왼쪽 정렬로 변경 */
-  gap: 8px;
-  padding: 8px 16px;
+  justify-content: flex-start;
+  padding: 8px 0;
+  margin-left: -8px;
   background: #fff;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: -1px; /* 캘린더와의 경계선 겹침 방지 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 1;
+  position: relative;
+}
+
+/* 캘린더 컨테이너 상단 조정 */
+.ant-picker-calendar {
+  border-radius: 0 0 8px 8px !important;
 }
 
 .compact-month-title {
-  font-size: 14px !important;
+  font-size: 15px !important;
+  color: #595959 !important;
   margin: 0 8px !important;
-  font-weight: 500 !important;
 }
 
 .compact-nav-button {
@@ -357,4 +367,19 @@
 
 .compact-nav-button .ant-btn-icon {
   font-size: 12px !important;
+}
+
+/* 기존 .compact-nav-button 대신 추가 */
+.square-nav-button {
+  width: 32px !important;
+  height: 32px !important;
+  border: 1px solid #d9d9d9 !important;
+  background: #fff !important;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02) !important;
+  margin-left: 8px !important;
+}
+
+.square-nav-button:hover {
+  border-color: #1890ff !important;
+  color: #1890ff !important;
 }
