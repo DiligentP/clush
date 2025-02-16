@@ -1,7 +1,7 @@
 import { CalendarEvent } from '../types/calendar';
 import { Moment } from 'moment';
 
-const API_BASE = '/api/calendar';
+const API_BASE = 'http://localhost:8080/api/calendar';
 
 export const CalendarAPI = {
   // 월별 일정 조회
