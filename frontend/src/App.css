@@ -92,26 +92,27 @@
 }
 
 .calendar-header {
-  padding: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
-  transition: all 0.3s ease;
-}
-
-.nav-button {
-  background: transparent !important;
-  border: 1px solid #dadce0 !important;
-}
-
-.nav-button:hover {
-  background: #f8f9fa !important;
+  padding: 12px 0;
+  background: #fff;
+  border-radius: 8px 8px 0 0;
 }
 
 .month-title {
-  color: #3c4043;
-  font-size: 22px !important;
-  font-weight: 400 !important;
+  color: #3c4043 !important;
+  font-weight: 500 !important;
+  margin: 0 20px !important;
+}
+
+.nav-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 기존 Ant Design의 오늘 날짜 스타일 제거 */
@@ -322,4 +323,38 @@
 
 .todo-list-container .ant-list {
   margin-top: 8px;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: rgba(24, 144, 255, 0.1) !important;
+  border-radius: 4px;
+}
+
+/* 기존 .calendar-header 대신 추가 */
+.compact-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 왼쪽 정렬로 변경 */
+  gap: 8px;
+  padding: 8px 16px;
+  background: #fff;
+}
+
+.compact-month-title {
+  font-size: 14px !important;
+  margin: 0 8px !important;
+  font-weight: 500 !important;
+}
+
+.compact-nav-button {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compact-nav-button .ant-btn-icon {
+  font-size: 12px !important;
 }

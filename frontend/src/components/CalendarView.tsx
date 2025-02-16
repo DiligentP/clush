@@ -1,42 +1,93 @@
-import { Calendar } from 'antd';
-import type { CalendarProps } from 'antd';
-import { Moment } from 'moment';
-import CalendarHeader from './headers/CalendarHeader';
-import CalendarEvents from './CalendarEvents';
+import { Calendar, Badge } from 'antd';
+import type { Moment } from 'moment';
+import { useEffect, useState } from 'react';
+import CustomCalendarHeader from './CustomCalendarHeader';
 
 interface CalendarViewProps {
-  currentDate: Moment;
-  mode: CalendarProps<Moment>['mode'];
-  onPanelChange: (date: Moment, mode: CalendarProps<Moment>['mode']) => void;
-  onMonthChange: (months: number) => void;
-  onToday: () => void;
-  onDateSelect: (date: Moment) => void;
+  currentMonth: Moment;
+  onPanelChange: (date: Moment) => void;
 }
 
 export default function CalendarView({ 
-  currentDate,
-  mode,
-  onPanelChange,
-  onMonthChange,
-  onToday,
-  onDateSelect
+  currentMonth,
+  onPanelChange
 }: CalendarViewProps) {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+  // 월별 일정 조회 API 호출
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(
+        `/api/calendar/${currentMonth.year()}/${currentMonth.month() + 1}`
+      );
+      const data = await response.json();
+      setEvents(data);
+    } catch (error) {
+      console.error('일정 조회 실패:', error);
+    }
+  };
+
+  // 월 변경 시 데이터 새로고침
+  useEffect(() => {
+    fetchEvents();
+  }, [currentMonth]);
+
+  // 캘린더 패널 변경 핸들러
+  const handlePanelChange = (date: Moment) => {
+    onPanelChange(date);
+    fetchEvents();
+  };
+
+  // 헤더 컨트롤 핸들러
+  const handleHeaderControl = (mode: 'prev' | 'next' | 'current') => {
+    const newDate = currentMonth.clone();
+    if (mode === 'prev') newDate.subtract(1, 'month');
+    if (mode === 'next') newDate.add(1, 'month');
+    handlePanelChange(newDate);
+  };
+
+  // 날짜별 렌더링 처리
+  const dateCellRender = (date: Moment) => {
+    const dayEvents = events.filter(event => 
+      date.isBetween(event.startDate, event.endDate, 'day', '[]')
+    );
+
+    return (
+      <div className="events">
+        {dayEvents.map(event => (
+          <Badge
+            key={event.id}
+            color={event.color}
+            text={event.title}
+            className="event-badge"
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="calendar-container">
+    <div className="site-layout-content">
       <Calendar
-        value={currentDate}
-        mode={mode}
-        onSelect={onDateSelect}
-        onPanelChange={(date, mode) => onPanelChange(date, mode)}
-        headerRender={({ value }) => (
-          <CalendarHeader 
-            value={value} 
-            onMonthChange={onMonthChange} 
-            onToday={onToday}
+        dateCellRender={dateCellRender}
+        onPanelChange={handlePanelChange}
+        className="ant-picker-calendar"
+        headerRender={() => (
+          <CustomCalendarHeader
+            value={currentMonth}
+            onPrev={() => handleHeaderControl('prev')}
+            onNext={() => handleHeaderControl('next')}
           />
         )}
-        dateCellRender={CalendarEvents}
       />
     </div>
   );
+}
+
+interface CalendarEvent {
+  id: number;
+  title: string;
+  startDate: Moment;
+  endDate: Moment;
+  color: string;
 } 

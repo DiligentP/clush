@@ -1,29 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Layout, Button } from 'antd';
-import useCalendar from './hooks/useCalendar';
 import MainHeader from './components/MainHeader';
-import CalendarView from './components/CalendarView';
 import './App.css';
-import moment, { Moment } from 'moment';
 import NewEventModal from './components/modals/NewEventModal';
 import NewTaskModal from './components/modals/NewTaskModal';
 import TodoList from './components/TodoList';
+import CalendarView from './components/CalendarView';
+import moment from 'moment';
 
 const { Content, Footer } = Layout;
 
 export default function App() {
-  const { 
-    mode, 
-    currentDate, 
-    setMode, 
-    handleMonthChange, 
-    setCurrentDate 
-  } = useCalendar();
-  const [isMenuOpen, setIsMenuOpen] = useState(true); // 메뉴가 기본으로 열린 상태 유지
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [filter, setFilter] = useState<'all' | 'completed' | 'active'>('all');
+  const [currentMonth, setCurrentMonth] = useState(moment());
 
   useEffect(() => {
     const saved = localStorage.getItem('todos');
@@ -36,10 +29,6 @@ export default function App() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleDateSelect = (date: Moment) => {
-    setEventModalVisible(true);
   };
 
   return (
@@ -83,18 +72,12 @@ export default function App() {
         </div>
       </div>
       <Content className="content" style={{ padding: '20px 50px' }}>
-        <CalendarView
-          currentDate={currentDate}
-          mode={mode}
-          onPanelChange={(date, newMode) => {
-            if (newMode) {
-              setMode(newMode);
-            }
-            setCurrentDate(date);
+        <CalendarView 
+          currentMonth={currentMonth}
+          onPanelChange={(date) => {
+            setCurrentMonth(date);
+            console.log('월 변경:', date.format('YYYY-MM'));
           }}
-          onMonthChange={handleMonthChange}
-          onToday={() => setCurrentDate(moment())}
-          onDateSelect={handleDateSelect}
         />
       </Content>
       <NewEventModal
@@ -118,4 +101,10 @@ export default function App() {
       </Footer>
     </Layout>
   );
+}
+
+interface TodoItem {
+  id: string;
+  title: string;
+  completed: boolean;
 }

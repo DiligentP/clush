@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Layout, Typography, Button } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import '../styles/MainHeader.css';
