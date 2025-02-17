@@ -47,6 +47,28 @@ docker-compose up --build  또는  docker compose up --build
 https://clush-be.diligentp.com
 
 ## 테스트 케이스
+**TodoService 테스트**
+| 테스트 이름 | 설명 |
+|------------|------|
+| `createTodo_Success` | 할일 생성 성공 시 올바른 응답 반환 및 저장 로직 검증 |
+| `updateTodo_InvalidId` | 존재하지 않는 ID로 수정 시도 시 예외 발생 확인 |
+| `updateTodoStatus_Success` | 할일 완료 상태 업데이트 정상 동작 검증 |
+| `updateTodoStatus_NotFound` | 존재하지 않는 ID로 상태 업데이트 시도 시 예외 처리 확인 |
+
+**CalendarService 테스트**
+| 테스트 이름 | 설명 |
+|------------|------|
+| `createEvent_Success` | 새 일정 생성 시 정상 응답 및 저장 로직 검증 |
+| `getEventsByMonth_NoEvents` | 해당 월에 일정이 없을 때 빈 리스트 반환 확인 |
+| `getEventsByMonth_WithEvents` | 월별 일정 조회 시 데이터 매핑 및 필터링 정상 동작 검증 |
+| `deleteEvent_WithValidId` | 유효한 ID로 삭제 시도 시 repository delete 호출 확인 |
+| `updateEvent_Success` | 기존 일정 수정 시 변경 사항 반영 및 저장 로직 검증 |
+| `updateEvent_InvalidId` | 존재하지 않는 ID로 수정 시도 시 예외 발생 확인 |
+
+**공통 테스트 패턴**
+- Mockito를 이용한 의존성 모킹
+- Given-When-Then 패턴 적용
+- 예외 발생 시나리오 검증
 
 ## 디렉토리 구조
 ```bash
