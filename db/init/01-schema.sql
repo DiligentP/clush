@@ -1,8 +1,4 @@
-SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER DATABASE clush_db CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
-DROP USER IF EXISTS 'clush'@'%';
-CREATE USER 'clush'@'%' IDENTIFIED WITH caching_sha2_password BY 'clush';
+CREATE USER 'clush'@'%' IDENTIFIED BY 'clush';
 GRANT ALL PRIVILEGES ON clush_db.* TO 'clush'@'%';
 FLUSH PRIVILEGES;
 
