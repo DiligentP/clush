@@ -1,5 +1,5 @@
-CREATE USER 'clush'@'%' IDENTIFIED BY 'clush';
-GRANT ALL PRIVILEGES ON clush_db.* TO 'clush'@'%';
+CREATE USER IF NOT EXISTS 'clush'@'%' IDENTIFIED BY 'clush';
+GRANT ALL PRIVILEGES ON clush_db.* TO 'clush'@'%' IDENTIFIED BY 'clush';
 FLUSH PRIVILEGES;
 
 CREATE DATABASE IF NOT EXISTS clush_db;
