@@ -19,7 +19,13 @@
 
 
 ## 주요 접속 정보 (실행 방법 가이드)
-### 옵션 1: 로컬 개발 환경 실행 (Docker-Compose 사용)
+### 옵션 1: 배포 서버 바로 사용
+| 서비스    | URL                                | 주요 기능                     |
+|-----------|------------------------------------|-----------------------------|
+| 프론트엔드 | https://clush.diligentp.com       | 할일 관리 + 캘린더 조회      |
+| 백엔드 API | https://clush-be.diligentp.com    | Swagger 문서 리다이렉트 |
+
+### 옵션 2: 로컬 개발 환경 실행 (Docker-Compose 사용)
 1. **프로젝트 클론**
 ```bash
 git clone https://github.com/DiligentP/clush-assignment.git
@@ -36,11 +42,7 @@ docker-compose up --build  또는  docker compose up --build
 | 백엔드    | http://localhost:8080       | Swagger 문서 리다이렉트            |
 | MySQL     | jdbc:mysql://localhost:3306 | 사용자: clush, 비밀번호: clush |
 
-### 옵션 2: 배포 서버 바로 사용
-| 서비스    | URL                                | 주요 기능                     |
-|-----------|------------------------------------|-----------------------------|
-| 프론트엔드 | https://clush.diligentp.com       | 할일 관리 + 캘린더 조회      |
-| 백엔드 API | https://clush-be.diligentp.com    | Swagger 문서 리다이렉트 |
+
 
 ## API 명세서
 ![image](https://obsidian-images-diligentp.s3.ap-northeast-2.amazonaws.com/281009a38e03c716ac5e03c8cda2aba6.png)
