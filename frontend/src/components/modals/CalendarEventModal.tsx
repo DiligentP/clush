@@ -2,6 +2,8 @@ import { Modal, Form, Input, Button, DatePicker, Checkbox } from 'antd';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { CalendarEventModalProps } from '../../types/calendar';
+import { message } from 'antd';
+import { CalendarAPI } from '../../services/calendarService';
 
 export default function CalendarEventModal({
   visible, 
@@ -10,7 +12,10 @@ export default function CalendarEventModal({
   onCancel, 
   onSubmit,
   onDelete,
-  initialTitle = ''
+  onShare,
+  initialTitle = '',
+  setShareCodeModalVisible,
+  tempShareCode
 }: CalendarEventModalProps) {
   const [form] = Form.useForm();
 
@@ -54,7 +59,8 @@ export default function CalendarEventModal({
           values.description || '',
           values.isAllDay || false,
           start,
-          end
+          end,
+          tempShareCode
         );
         form.resetFields();
       })
@@ -83,6 +89,40 @@ export default function CalendarEventModal({
             style={{ position: 'absolute', left: 24, bottom: 16 }}
           >
             삭제
+          </Button>
+        ),
+        !selectedEvent && (
+          <Button
+            key="share-code"
+            onClick={() => {
+              onCancel();
+              setShareCodeModalVisible(true);
+            }}
+            style={{ position: 'absolute', left: 24, bottom: 16 }}
+          >
+            공유 코드 등록
+          </Button>
+        ),
+        selectedEvent && (
+          <Button 
+            key="share" 
+            onClick={() => {
+              if(selectedEvent) {
+                CalendarAPI.generateShareCode(selectedEvent.id)
+                .then(code => {
+                  navigator.clipboard.writeText(code)
+                    .then(() => {
+                      onCancel(); // 모달 닫기
+                      message.success('공유 코드가 복사되었습니다. 다른 사용자에게 공유해주세요');
+                    })
+                    .catch(() => message.error('복사 실패'));
+                })
+                .catch(error => message.error('공유 코드 생성 실패'));
+              }
+            }}
+            style={{ marginRight: 8 }}
+          >
+            공유
           </Button>
         ),
         <Button key="cancel" onClick={() => {

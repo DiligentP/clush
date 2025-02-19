@@ -9,6 +9,7 @@ import CalendarView from './components/CalendarView';
 import TodoList from './components/TodoList';
 import NewTaskModal from './components/modals/NewTaskModal';
 import CalendarEventModal from './components/modals/CalendarEventModal';
+import ShareCodeModal from './components/modals/ShareCodeModal';
 
 // Services & Styles
 import {CalendarAPI} from './services/calendarService';
@@ -35,6 +36,8 @@ export default function App() {
   const [currentMonth, setCurrentMonth] = useState<moment.Moment>(moment());
   const [selectedDate, setSelectedDate] = useState<moment.Moment>(moment());
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | undefined>(undefined);
+  const [shareCodeModalVisible, setShareCodeModalVisible] = useState(false);
+  const [tempShareCode, setTempShareCode] = useState('');
 
   useEffect(() => {
     TodoAPI.getAllTodos()
@@ -144,9 +147,19 @@ export default function App() {
             setEventModalVisible(false);
             setSelectedEvent(undefined);
           }}
-          onSubmit={(title, description, isAllDay, start, end) => {
+          setShareCodeModalVisible={setShareCodeModalVisible}
+          tempShareCode={tempShareCode}
+          onSubmit={(title, description, isAllDay, start, end, shareCode) => {
             if(selectedEvent) {
-              CalendarAPI.updateEvent(selectedEvent.id, title, description, start, end, isAllDay)
+              CalendarAPI.updateEvent(
+                selectedEvent.id, 
+                title, 
+                description, 
+                start, 
+                end, 
+                isAllDay, 
+                shareCode
+              )
                 .then(() => {
                   setEventModalVisible(false);
                   setCurrentMonth(currentMonth.clone());
@@ -178,6 +191,16 @@ export default function App() {
             TodoAPI.getAllTodos()
               .then(setTodos)
               .catch(error => message.error('할일 목록 갱신 실패'));
+          }}
+        />
+        <ShareCodeModal
+          visible={shareCodeModalVisible}
+          initialValue={tempShareCode}
+          onCancel={() => setShareCodeModalVisible(false)}
+          onSubmit={(code) => {
+            setTempShareCode(code);
+            setShareCodeModalVisible(false);
+            setCurrentMonth(currentMonth.clone());
           }}
         />
         <Footer className="app-footer">

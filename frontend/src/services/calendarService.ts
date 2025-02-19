@@ -20,7 +20,8 @@ export const CalendarAPI = {
     description: string,
     startDate: Moment,
     endDate: Moment,
-    allDay: boolean
+    allDay: boolean,
+    shareCode?: string
   ): Promise<CalendarEvent> => {
     const response = await fetch(API_BASE, {
       method: 'POST',
@@ -30,7 +31,8 @@ export const CalendarAPI = {
         description,
         startDate: startDate.format('YYYY-MM-DD'),
         endDate: endDate.format('YYYY-MM-DD'),
-        allDay
+        allDay,
+        shareCode
       })
     });
     if (!response.ok) throw new Error('일정 생성 실패');
@@ -44,7 +46,8 @@ export const CalendarAPI = {
     description: string,
     startDate: Moment,
     endDate: Moment,
-    allDay: boolean
+    allDay: boolean,
+    shareCode?: string
   ): Promise<CalendarEvent> => {
     const response = await fetch(`${API_BASE}/${id}`, {
       method: 'PUT',
@@ -54,7 +57,8 @@ export const CalendarAPI = {
         description,
         startDate: startDate.format('YYYY-MM-DD'),
         endDate: endDate.format('YYYY-MM-DD'),
-        allDay
+        allDay,
+        shareCode
       })
     });
     if (!response.ok) throw new Error('일정 수정 실패');
@@ -64,5 +68,23 @@ export const CalendarAPI = {
   // 일정 삭제
   deleteEvent: async (id: number): Promise<void> => {
     await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+  },
+
+  // 공유 코드 생성
+  generateShareCode: async (eventId: number): Promise<string> => {
+    const response = await fetch(`${API_BASE}/${eventId}/share`, { method: 'POST' });
+    if (!response.ok) throw new Error('공유 코드 생성 실패');
+    return response.text();
+  },
+
+  // 공유 일정 조회
+  getSharedEvent: async (shareCode: string): Promise<CalendarEvent> => {
+    const response = await fetch(`${API_BASE}/shared`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shareCode })
+    });
+    if (!response.ok) throw new Error('공유 일정 조회 실패');
+    return response.json();
   }
 }; 

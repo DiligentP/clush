@@ -16,12 +16,14 @@ export interface CalendarEventModalProps {
   onCancel: () => void;
   onDelete?: () => void;
   onSubmit: (
-    title: string, 
+    title: string,
     description: string,
     isAllDay: boolean,
-    startDate: Moment, 
-    endDate: Moment
+    start: Moment,
+    end: Moment,
+    shareCode?: string
   ) => void;
+  onShare?: () => void;
   initialTitle?: string;
 }
 
