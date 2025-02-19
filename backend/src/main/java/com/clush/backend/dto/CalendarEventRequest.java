@@ -23,9 +23,14 @@ public class CalendarEventRequest {
     @NotNull
     private LocalDate endDate;
     private boolean allDay;
+    private String shareCode;
 
     @AssertTrue(message = "종료일은 시작일 이후여야 합니다")
     public boolean isEndDateValid() {
         return endDate.isAfter(startDate) || endDate.isEqual(startDate);
+    }
+
+    public String getShareCode() {
+        return shareCode;
     }
 } 

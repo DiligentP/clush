@@ -4,7 +4,9 @@ import com.clush.backend.dto.CalendarEventRequest;
 import com.clush.backend.dto.CalendarEventResponse;
 import com.clush.backend.mapper.CalendarEventMapper;
 import com.clush.backend.model.CalendarEvent;
+import com.clush.backend.model.CalendarEventShare;
 import com.clush.backend.repository.CalendarEventRepository;
+import com.clush.backend.repository.CalendarEventShareRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +25,7 @@ public class CalendarService {
 
     private final CalendarEventRepository calendarEventRepository;
     private final CalendarEventMapper calendarEventMapper;
+    private final CalendarEventShareRepository calendarEventShareRepository;
 
     // 전체 일정 조회
     @Transactional(readOnly = true)
@@ -34,8 +38,19 @@ public class CalendarService {
     @Transactional
     public CalendarEventResponse createEvent(CalendarEventRequest request) {
         CalendarEvent event = calendarEventMapper.toEntity(request);
+        if(request.getShareCode() != null) {
+            handleShareCode(event, request.getShareCode());
+        }
         CalendarEvent savedEvent = calendarEventRepository.save(event);
         return calendarEventMapper.toResponse(savedEvent);
+    }
+
+    private void handleShareCode(CalendarEvent event, String shareCode) {
+        calendarEventShareRepository.findByShareCode(shareCode)
+            .ifPresent(existing -> {
+                CalendarEventShare updated = existing.updateEvent(event);
+                calendarEventShareRepository.save(updated);
+            });
     }
 
     // 일정 수정
@@ -59,18 +74,13 @@ public class CalendarService {
     // 일정 삭제
     @Transactional
     public void deleteEvent(Long id) {
+        // 공유 정보 먼저 삭제
+        calendarEventShareRepository.deleteByEventId(id);
         calendarEventRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     public List<CalendarEventResponse> getEventsByPeriod(LocalDateTime start, LocalDateTime end) {
-            return null;
-        // 구현 예정
-    }
-
-    // 일정 공유
-    @Transactional
-    public CalendarEventResponse shareEvent(Long eventId, String targetUser) {
             return null;
         // 구현 예정
     }
@@ -94,5 +104,39 @@ public class CalendarService {
         return events.stream()
                 .map(calendarEventMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    // 일정 공유 생성
+    @Transactional
+    public String createShareCode(Long eventId) {
+        CalendarEvent event = calendarEventRepository.findById(eventId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일정 ID"));
+
+        String shareCode = UUID.randomUUID().toString();
+        
+        calendarEventShareRepository.findByEventId(eventId)
+            .ifPresentOrElse(
+                existing -> {
+                    existing.updateShareCode(shareCode);
+                    calendarEventShareRepository.save(existing);
+                },
+                () -> calendarEventShareRepository.save(
+                    CalendarEventShare.builder()
+                        .event(event)
+                        .shareCode(shareCode)
+                        .build()
+                )
+            );
+        
+        return shareCode;
+    }
+
+    // 일정 공유 코드 조회
+    @Transactional(readOnly = true)
+    public CalendarEventResponse getEventByShareCode(String shareCode) {
+        CalendarEventShare share = calendarEventShareRepository.findByShareCode(shareCode)
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 공유 코드"));
+        
+        return calendarEventMapper.toResponse(share.getEvent());
     }
 } 

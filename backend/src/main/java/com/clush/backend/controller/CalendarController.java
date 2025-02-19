@@ -2,6 +2,7 @@ package com.clush.backend.controller;
 
 import com.clush.backend.dto.CalendarEventRequest;
 import com.clush.backend.dto.CalendarEventResponse;
+import com.clush.backend.dto.ShareRequest;
 import com.clush.backend.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -60,5 +61,19 @@ public class CalendarController {
         log.info("일정 삭제 요청 - ID: {}", id);
         calendarService.deleteEvent(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 일정 공유 코드 생성
+    @Operation(summary = "공유 코드 생성", description = "일정 공유 코드 생성")
+    @PostMapping("/{id}/share")
+    public ResponseEntity<String> createShareCode(@PathVariable Long id) {
+        return ResponseEntity.ok(calendarService.createShareCode(id));
+    }
+
+    // 공유 코드로 일정 조회
+    @Operation(summary = "공유 코드로 일정 조회", description = "공유 코드를 사용해 일정 정보 조회")
+    @PostMapping("/shared")
+    public ResponseEntity<CalendarEventResponse> getSharedEvent(@RequestBody ShareRequest request) {
+        return ResponseEntity.ok(calendarService.getEventByShareCode(request.getShareCode()));
     }
 } 
